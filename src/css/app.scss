@@ -1,1 +1,10 @@
 // app global css in SCSS form
+@font-face {
+  font-family: Edu-NSW-ACT-Foundation;
+  src: url(./fonts/EduNSWACTFoundation-VariableFont_wght.ttf);
+}
+
+// declare a class which applies it
+.edu-font {
+  font-family: "Edu-NSW-ACT-Foundation";
+}
