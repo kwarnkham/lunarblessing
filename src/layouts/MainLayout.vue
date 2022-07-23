@@ -6,7 +6,7 @@
 
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+            <img :src="logoUrl" />
           </q-avatar>
           Title
         </q-toolbar-title>
@@ -54,4 +54,7 @@ const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
+const logoUrl =
+  process.env.ASSET_URL +
+  "/assets/logos/lunarblessings/lunarblessings/lb-logo.png";
 </script>
