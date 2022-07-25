@@ -20,8 +20,9 @@
         required
         type="textarea"
       ></q-input>
-      <div class="text-center q-mt-sm">
+      <div class="q-mt-sm row justify-around">
         <q-btn>Submit</q-btn>
+        <q-btn @click="showLoginDialog">Login</q-btn>
       </div>
     </q-form>
   </q-page>
@@ -29,10 +30,18 @@
 
 <script setup>
 import { ref } from "vue";
-import { fasPhone, fasMobile } from "@quasar/extras/fontawesome-v6";
+import { fasPhone } from "@quasar/extras/fontawesome-v6";
+import { useQuasar } from "quasar";
+import LoginDialog from "src/components/LoginDialog";
 const checkoutForm = ref(null);
+const { dialog } = useQuasar();
 const name = ref("");
 const mobile = ref("");
 const address = ref("");
 const submit = () => {};
+const showLoginDialog = () => {
+  dialog({
+    component: LoginDialog,
+  });
+};
 </script>
