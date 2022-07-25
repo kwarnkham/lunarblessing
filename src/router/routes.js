@@ -9,9 +9,19 @@ const routes = [
         name: "index",
       },
       {
-        path: "lamps",
+        path: "lamp",
         component: () => import("pages/LampPage.vue"),
         name: "lamp",
+      },
+      {
+        path: "cart",
+        component: () => import("pages/CartPage.vue"),
+        name: "cart",
+      },
+      {
+        path: "checkout",
+        component: () => import("pages/CheckoutPage.vue"),
+        name: "checkout",
       },
     ],
   },

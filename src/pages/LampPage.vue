@@ -12,7 +12,7 @@
     </div>
 
     <div v-if="selectedSign" class="full-width q-gutter-y-sm q-my-sm">
-      <div class="bg-teal-2 rounded-borders">
+      <div class="bg-amber-1 rounded-borders">
         <q-img
           src="https://spaces.madewithheart.tech/assets/aquarius.png"
           class="fit"
@@ -56,11 +56,11 @@
       </div>
       <div class="text-center">
         <q-radio :label="'Bright Lid'" v-model="brightLid" :val="true" />
-        <q-radio :label="'Dimmed Lit'" v-model="brightLid" :val="false" />
+        <q-radio :label="'Dimmed Lid'" v-model="brightLid" :val="false" />
       </div>
     </div>
     <div class="q-mt-sm">
-      <q-btn :label="'It\'s done!'" no-caps color="positive" class="fit" />
+      <q-btn :label="'Done!'" no-caps color="positive" class="fit" />
     </div>
   </q-page>
 </template>

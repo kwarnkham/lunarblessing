@@ -4,13 +4,22 @@
   src: url(./fonts/EduNSWACTFoundation-VariableFont_wght.ttf);
 }
 
+@font-face {
+  font-family: VarelaRound;
+  src: url(./fonts/VarelaRound-Regular.ttf);
+}
+
 // declare a class which applies it
 .edu-font {
   font-family: "Edu-NSW-ACT-Foundation";
 }
 
+.varela-font {
+  font-family: "VarelaRound";
+}
+
 body {
-  font-family: "Edu-NSW-ACT-Foundation";
+  font-family: "VarelaRound";
 }
 
 .fb-color {
