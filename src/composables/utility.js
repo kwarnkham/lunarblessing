@@ -1,5 +1,8 @@
 import { copyToClipboard, Notify } from "quasar";
 // import { useStore } from "src/stores/store";
+import { date } from "quasar";
+// destructuring to keep only what is needed
+const { formatDate } = date;
 
 export default function useUtility() {
   // const store = useStore();
@@ -44,6 +47,10 @@ export default function useUtility() {
     const casted = String(number);
     if (casted.length == 1) return "0" + casted;
     else return casted;
+  };
+
+  const parseDate = (date) => {
+    return formatDate(new Date(date), "DD-MM-YYYY hh:mm:ss A");
   };
 
   const setValue = (number) => {
@@ -144,6 +151,7 @@ export default function useUtility() {
     downloadImage,
     copyLinkToClipboard,
     setValue,
+    parseDate,
     // initFB,
   };
 }

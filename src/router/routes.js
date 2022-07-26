@@ -24,7 +24,7 @@ const routes = [
         name: "checkout",
       },
       {
-        path: "order-deatils/:id",
+        path: "order-details/:id",
         component: () => import("pages/OrderDetailsPage.vue"),
         name: "orderDetails",
       },
