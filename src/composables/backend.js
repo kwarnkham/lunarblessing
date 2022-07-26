@@ -37,5 +37,15 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+    checkToken: async () => {
+      try {
+        return await api({
+          method: "POST",
+          url: "/check-token",
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
   };
 }

@@ -12,7 +12,7 @@
           >
           </q-input>
           <div class="text-center q-mt-sm">
-            <q-btn type="submit" :label="'Login'" color="primary" />
+            <q-btn type="submit" :label="'Login'" color="primary" no-caps />
           </div>
         </q-form>
       </q-card-section>
@@ -45,6 +45,7 @@ const showRegisterDialog = () => {
   });
 };
 const { login } = useBackend();
+const { setUser } = useUserStore();
 const submit = () => {
   login({
     mobile: mobile.value,
@@ -53,6 +54,7 @@ const submit = () => {
     console.log(user, token);
     localStorage.set("token", token);
     api.defaults.headers.common["Authorization"] = "Bearer " + token;
+    setUser(user);
   });
 };
 const props = defineProps({

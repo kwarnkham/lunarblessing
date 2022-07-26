@@ -38,7 +38,17 @@
       </q-markup-table>
     </div>
     <div v-if="getItems.length">
-      <q-btn :label="'Checkout'" class="fit" push color="positive" />
+      <q-btn
+        :label="'Checkout'"
+        class="fit"
+        push
+        color="positive"
+        @click="
+          $router.push({
+            name: 'checkout',
+          })
+        "
+      />
     </div>
     <div v-else class="col flex flex-center">
       <q-btn

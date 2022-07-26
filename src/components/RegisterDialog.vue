@@ -42,6 +42,7 @@ import { ref } from "vue";
 import LoginDialog from "src/components/LoginDialog";
 import useBackend from "src/composables/backend";
 import { api } from "src/boot/axios";
+import { useUserStore } from "src/stores/user";
 const mobile = ref("");
 const name = ref("");
 const password = ref("");
@@ -54,7 +55,7 @@ const showLoginDialog = () => {
   });
 };
 const { register } = useBackend();
-
+const { setUser } = useUserStore();
 const submit = () => {
   loading.show();
   register({
@@ -67,6 +68,7 @@ const submit = () => {
       console.log(token, user);
       localStorage.set("token", token);
       api.defaults.headers.common["Authorization"] = "Bearer " + token;
+      setUser(user);
     })
     .finally(() => {
       loading.hide();

@@ -21,8 +21,10 @@
         type="textarea"
       ></q-input>
       <div class="q-mt-sm row justify-around">
-        <q-btn v-if="token">Submit</q-btn>
-        <q-btn @click="showLoginDialog" v-else>Login</q-btn>
+        <q-btn v-if="token" push color="positive" no-caps type="submit">
+          Make Order
+        </q-btn>
+        <q-btn @click="showLoginDialog" v-else no-caps>Login</q-btn>
       </div>
     </q-form>
   </q-page>
