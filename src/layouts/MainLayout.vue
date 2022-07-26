@@ -1,16 +1,24 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white" height-hint="98">
-      <!-- <q-toolbar>
-        <q-btn dense flat round :icon="fasBars" @click="toggleLeftDrawer" />
-        <q-toolbar-title class="text-center">
-          <q-avatar>
-            <img :src="logoUrl" />
-          </q-avatar>
+      <q-toolbar>
+        <q-toolbar-title>
+          <div v-if="$route.name == 'index'" class="row items-center">
+            <q-avatar class="q-mr-sm">
+              <img :src="logoUrl" />
+            </q-avatar>
+            <div>Trying our best</div>
+          </div>
+          <q-icon
+            :name="fasChevronLeft"
+            size="sm"
+            v-else
+            @click="$router.go(-1)"
+          />
         </q-toolbar-title>
-      </q-toolbar> -->
+      </q-toolbar>
 
-      <q-tabs
+      <!-- <q-tabs
         align="center"
         active-color="white"
         class="bg-grey-7 text-info"
@@ -27,7 +35,7 @@
             {{ tab.label }}
           </span>
         </q-route-tab>
-      </q-tabs>
+      </q-tabs> -->
     </q-header>
     <!--
     <q-drawer
@@ -60,18 +68,23 @@
 </template>
 
 <script setup>
-import { fasPhone, fabFacebook, fasHouse } from "@quasar/extras/fontawesome-v6";
+import {
+  fasPhone,
+  fabFacebook,
+  fasHouse,
+  fasChevronLeft,
+} from "@quasar/extras/fontawesome-v6";
 
-const tabs = [
-  {
-    routeName: "index",
-    icon: fasHouse,
-  },
-  {
-    routeName: "lamp",
-    label: "Lamp",
-  },
-];
+// const tabs = [
+//   {
+//     routeName: "index",
+//     icon: fasHouse,
+//   },
+//   {
+//     routeName: "lamp",
+//     label: "Lamp",
+//   },
+// ];
 const logoUrl =
   process.env.ASSET_URL +
   "/assets/logos/lunarblessings/lunarblessings/lb-logo.png";

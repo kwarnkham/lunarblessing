@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
+import { LocalStorage } from "quasar";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
-    items: [],
+    items: LocalStorage.getItem("cartItems") || [],
   }),
 
   getters: {
@@ -22,6 +23,7 @@ export const useCartStore = defineStore("cart", {
           this.items[index] = cartItem;
         } else this.items.push(item);
       }
+      return this.items;
     },
 
     decreaseItem(item) {
