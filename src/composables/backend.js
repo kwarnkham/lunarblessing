@@ -68,5 +68,16 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+    fetchOrders: async (params) => {
+      try {
+        return await api({
+          method: "GET",
+          url: "/order",
+          params,
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
   };
 }
