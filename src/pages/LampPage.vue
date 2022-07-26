@@ -99,6 +99,7 @@ const addToCart = () => {
     cart.addItem(selectedItem.value);
     dialog({
       title: "Check the cart now?",
+      persistent: true,
       cancel: {
         label: "Keep shopping",
         noCaps: true,

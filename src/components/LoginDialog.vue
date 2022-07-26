@@ -34,6 +34,7 @@ import { ref } from "vue";
 import RegisterDialog from "src/components/RegisterDialog";
 import useBackend from "src/composables/backend";
 import { api } from "src/boot/axios";
+import { useUserStore } from "src/stores/user";
 
 const mobile = ref("");
 const password = ref("");

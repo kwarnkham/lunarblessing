@@ -1,21 +1,27 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white" height-hint="98">
-      <q-toolbar>
-        <q-toolbar-title>
-          <div v-if="$route.name == 'index'" class="row items-center">
-            <q-avatar class="q-mr-sm">
-              <img :src="logoUrl" />
-            </q-avatar>
-            <div>Trying our best</div>
-          </div>
-          <q-icon
-            :name="fasChevronLeft"
-            size="sm"
-            v-else
-            @click="$router.go(-1)"
-          />
-        </q-toolbar-title>
+      <q-toolbar class="row justify-between">
+        <div v-if="$route.name == 'index'" class="row items-center">
+          <q-avatar class="q-mr-sm">
+            <img :src="logoUrl" />
+          </q-avatar>
+          <div>Trying our best</div>
+        </div>
+        <div v-else class="row justify-between">
+          <q-icon :name="fasChevronLeft" size="sm" @click="$router.go(-1)" />
+        </div>
+        <q-icon
+          :name="fasCartShopping"
+          size="md"
+          @click="$router.push({ name: 'cart' })"
+          v-if="getItems.length"
+          color="info"
+        >
+          <q-badge color="secondary" floating transparent>
+            {{ getItems.length }}
+          </q-badge>
+        </q-icon>
       </q-toolbar>
 
       <!-- <q-tabs
@@ -71,10 +77,12 @@
 import {
   fasPhone,
   fabFacebook,
-  fasHouse,
+  fasCartShopping,
   fasChevronLeft,
 } from "@quasar/extras/fontawesome-v6";
+import { useCartStore } from "src/stores/cart";
 
+const { getItems } = useCartStore();
 // const tabs = [
 //   {
 //     routeName: "index",

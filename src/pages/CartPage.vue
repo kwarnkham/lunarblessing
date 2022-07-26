@@ -50,25 +50,22 @@
         "
       />
     </div>
-    <div v-else class="col flex flex-center">
-      <q-btn
-        label="No items in cart yet. Browse here."
-        no-caps
-        push
-        @click="
-          $router.replace({
-            name: 'lamp',
-          })
-        "
-      />
-    </div>
   </q-page>
 </template>
 
 <script setup>
 import useUtility from "src/composables/utility";
 import { useCartStore } from "src/stores/cart";
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 const { pageOptions } = useUtility();
 const { getItems } = useCartStore();
+const router = useRouter();
+onMounted(() => {
+  if (getItems.length <= 0)
+    router.replace({
+      name: "lamp",
+    });
+});
 </script>

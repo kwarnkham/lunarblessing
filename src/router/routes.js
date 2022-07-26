@@ -23,6 +23,11 @@ const routes = [
         component: () => import("pages/CheckoutPage.vue"),
         name: "checkout",
       },
+      {
+        path: "order-deatils/:id",
+        component: () => import("pages/OrderDetailsPage.vue"),
+        name: "orderDetails",
+      },
     ],
   },
 

@@ -16,5 +16,9 @@ export const useUserStore = defineStore("user", {
       this.user = payload;
       return this.user;
     },
+    setAddress(payload) {
+      this.user.address = payload;
+      return this.user;
+    },
   },
 });

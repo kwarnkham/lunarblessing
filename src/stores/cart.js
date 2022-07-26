@@ -32,11 +32,17 @@ export const useCartStore = defineStore("cart", {
         if (this.items[index].quantity > 1) this.items[index].quantity--;
         else this.items.splice(index, 1);
       }
+      return this.items;
     },
 
     removeItem(item) {
       const index = this.items.find((val) => val.id == item.id);
       if (index >= 0) this.items.splice(index, 1);
+      return this.items;
+    },
+    clearCart() {
+      this.items = [];
+      return [];
     },
   },
 });
