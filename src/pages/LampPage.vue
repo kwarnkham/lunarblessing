@@ -1,23 +1,19 @@
 <template>
-  <q-page padding>
+  <q-page padding v-if="itemPage">
     <div class="row justify-around q-gutter-y-xs">
       <q-btn
-        :label="sign"
-        v-for="sign in signs"
-        :key="sign"
+        :label="item.name"
+        v-for="item in itemPage.data"
+        :key="item.id"
         push
-        @click="selectedSign = sign"
-        :color="selectedSign == sign ? 'primary' : 'grey-6'"
+        @click="selectedItem = item"
+        :color="selectedItem.id == item.id ? 'primary' : 'grey-6'"
       />
     </div>
 
-    <div v-if="selectedSign" class="full-width q-gutter-y-sm q-my-sm">
+    <div v-if="selectedItem" class="full-width q-gutter-y-sm q-my-sm">
       <div class="bg-amber-1 rounded-borders">
-        <q-img
-          src="https://spaces.madewithheart.tech/assets/aquarius.png"
-          class="fit"
-          fit="contain"
-        />
+        <q-img :src="selectedItem.pictures[0].url" class="fit" fit="contain" />
       </div>
 
       <div class="row justify-around">
@@ -40,7 +36,7 @@
       </div>
     </div>
     <q-input
-      :label="'Custom quote'"
+      :label="'Custom quote (Optional)'"
       outlined
       :placeholder="'Growing strong'"
       color="secondary"
@@ -55,25 +51,66 @@
         <q-btn :icon="fasInfo" glossy size="xs" round color="info" />
       </div>
       <div class="text-center">
-        <q-radio :label="'Bright Lid'" v-model="brightLid" :val="true" />
-        <q-radio :label="'Dimmed Lid'" v-model="brightLid" :val="false" />
+        <q-radio :label="'Bright Lid'" v-model="dimmedLid" :val="true" />
+        <q-radio :label="'Dimmed Lid'" v-model="dimmedLid" :val="false" />
       </div>
     </div>
     <div class="q-mt-sm">
-      <q-btn :label="'Done!'" no-caps color="positive" class="fit" />
+      <q-btn
+        :label="'Done!'"
+        no-caps
+        color="positive"
+        class="fit"
+        @click="addToCart"
+      />
     </div>
   </q-page>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { fasLightbulb, fasInfo } from "@quasar/extras/fontawesome-v6";
+import useBackend from "src/composables/backend";
+import { useCartStore } from "src/stores/cart";
+import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
 
-const selectedSign = ref("aries");
+const selectedItem = ref(null);
 const quote = ref("");
-const brightLid = ref(true);
+const dimmedLid = ref(true);
 const switchedOn = ref(true);
 const switching = ref(false);
+const cart = useCartStore();
+const { dialog } = useQuasar();
+const router = useRouter();
+const addToCart = () => {
+  dialog({
+    title: "Adding to cart",
+    prompt: {
+      model: 1,
+      label: "How many quantity you want?",
+      type: "tel",
+      isValid: (val) => !isNaN(Number(val) || "Please only type number"),
+    },
+  }).onOk((quantity) => {
+    selectedItem.value.text = quote.value;
+    selectedItem.value.dimmed_lid = dimmedLid.value;
+    selectedItem.value.quantity = quantity;
+    cart.addItem(selectedItem.value);
+    dialog({
+      title: "Check the cart now?",
+      cancel: {
+        label: "Keep shopping",
+        noCaps: true,
+        flat: true,
+      },
+    }).onOk(() => {
+      router.push({
+        name: "cart",
+      });
+    });
+  });
+};
 const signs = [
   "aquarius",
   "pisces",
@@ -88,6 +125,14 @@ const signs = [
   "sagittarius",
   "capricorn",
 ];
+const { fetchItems } = useBackend();
+const itemPage = ref(null);
+onMounted(() => {
+  fetchItems().then((data) => {
+    itemPage.value = data;
+    selectedItem.value = itemPage.value.data[0];
+  });
+});
 </script>
 
 <style lang="scss" scoped>

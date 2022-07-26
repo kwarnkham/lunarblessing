@@ -21,8 +21,8 @@
         type="textarea"
       ></q-input>
       <div class="q-mt-sm row justify-around">
-        <q-btn>Submit</q-btn>
-        <q-btn @click="showLoginDialog">Login</q-btn>
+        <q-btn v-if="token">Submit</q-btn>
+        <q-btn @click="showLoginDialog" v-else>Login</q-btn>
       </div>
     </q-form>
   </q-page>
@@ -34,11 +34,12 @@ import { fasPhone } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import LoginDialog from "src/components/LoginDialog";
 const checkoutForm = ref(null);
-const { dialog } = useQuasar();
+const { dialog, localStorage } = useQuasar();
 const name = ref("");
 const mobile = ref("");
 const address = ref("");
 const submit = () => {};
+const token = localStorage.getItem("token");
 const showLoginDialog = () => {
   dialog({
     component: LoginDialog,

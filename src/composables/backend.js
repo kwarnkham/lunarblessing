@@ -26,5 +26,16 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+    fetchItems: async (params) => {
+      try {
+        return await api({
+          method: "GET",
+          url: "/item",
+          params,
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
   };
 }
