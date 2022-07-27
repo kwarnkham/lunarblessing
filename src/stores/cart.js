@@ -14,6 +14,7 @@ export const useCartStore = defineStore("cart", {
 
   actions: {
     addItem(item) {
+      item.quantity = Number(item.quantity);
       if (this.items.length == 0) this.items.push(item);
       else {
         const index = this.items.findIndex((val) => val.id == item.id);
@@ -26,17 +27,15 @@ export const useCartStore = defineStore("cart", {
       return this.items;
     },
 
-    decreaseItem(item) {
+    replaceItem(item) {
+      item.quantity = Number(item.quantity);
       const index = this.items.findIndex((val) => val.id == item.id);
-      if (index >= 0) {
-        if (this.items[index].quantity > 1) this.items[index].quantity--;
-        else this.items.splice(index, 1);
-      }
+      if (index >= 0) this.items[index] = item;
       return this.items;
     },
 
     removeItem(item) {
-      const index = this.items.find((val) => val.id == item.id);
+      const index = this.items.findIndex((val) => val.id == item.id);
       if (index >= 0) this.items.splice(index, 1);
       return this.items;
     },
