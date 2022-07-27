@@ -20,5 +20,13 @@ export const useUserStore = defineStore("user", {
       this.user.address = payload;
       return this.user;
     },
+    setName(payload) {
+      this.user.name = payload;
+      return this.user;
+    },
+    setMobile(payload) {
+      this.user.mobile = payload;
+      return this.user;
+    },
   },
 });

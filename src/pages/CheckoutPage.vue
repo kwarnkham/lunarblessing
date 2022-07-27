@@ -24,7 +24,10 @@
         <q-btn v-if="user" push color="positive" no-caps type="submit">
           Make Order
         </q-btn>
-        <q-btn @click="showLoginDialog" v-else no-caps>Login</q-btn>
+        <div v-else class="row justify-around full-width">
+          <q-btn @click="showLoginDialog" no-caps>Login</q-btn>
+          <q-btn @click="loginViaFacebook" no-caps>Login with Facebook</q-btn>
+        </div>
       </div>
     </q-form>
   </q-page>
@@ -40,6 +43,7 @@ import useBackend from "src/composables/backend";
 import { useCartStore } from "src/stores/cart";
 import { useRouter } from "vue-router";
 import { fasCheck } from "@quasar/extras/fontawesome-v6";
+import useFb from "src/composables/fb";
 
 const checkoutForm = ref(null);
 const { dialog } = useQuasar();
@@ -58,9 +62,9 @@ const submit = () => {
     items: cartStore.getItems,
   }).then((order) => {
     cartStore.clearCart();
-    if (!user.value.addresss) {
-      userStore.setAddress(address.value);
-    }
+    if (!user.value.addresss) userStore.setAddress(address.value);
+    if (!user.value.name) userStore.setName(name.value);
+    if (!user.value.mobile) userStore.setMobile(mobile.value);
 
     router.push({
       name: "orderDetails",
@@ -69,6 +73,10 @@ const submit = () => {
       },
     });
   });
+};
+const { loginWithFb } = useFb();
+const loginViaFacebook = () => {
+  loginWithFb();
 };
 
 const showLoginDialog = () => {

@@ -6,7 +6,7 @@ import { api } from "./axios";
 
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
-export default boot(async ({ store }) => {
+export default boot(async ({ store, router }) => {
   if (api.defaults.headers.common["Authorization"]) {
     const userStore = useUserStore(store);
     const user = await api({
@@ -18,6 +18,7 @@ export default boot(async ({ store }) => {
         if (e.response.status == 401) {
           LocalStorage.remove("token");
           api.defaults.headers.common["Authorization"] = undefined;
+          router.replace({ name: "index" });
         }
       });
     userStore.setUser(user);

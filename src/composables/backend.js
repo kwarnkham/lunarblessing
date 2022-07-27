@@ -79,5 +79,16 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+    loginWithFacebook: async (data) => {
+      try {
+        return await api({
+          method: "POST",
+          url: "/login/fb",
+          data,
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
   };
 }

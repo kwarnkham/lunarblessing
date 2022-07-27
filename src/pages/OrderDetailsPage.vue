@@ -81,7 +81,7 @@
 import useBackend from "src/composables/backend";
 import useUtility from "src/composables/utility";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
 const route = useRoute();
 const { parseDate } = useUtility();
@@ -104,7 +104,11 @@ const parseOrderStatus = (status) => {
   }
 };
 const { fetchAnOrder } = useBackend();
+const router = useRouter();
 onMounted(() => {
-  fetchAnOrder(route.params.id).then((data) => (order.value = data));
+  fetchAnOrder(route.params.id).then((data) => {
+    if (data) order.value = data;
+    else router.replace({ name: "index" });
+  });
 });
 </script>
