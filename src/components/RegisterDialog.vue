@@ -54,22 +54,20 @@ import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
 import { fasCheck, fabFacebook } from "@quasar/extras/fontawesome-v6";
 import useFb from "src/composables/fb";
+import useApp from "src/composables/app";
 
 const mobile = ref("");
 const name = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
-const { dialog, loading, localStorage, notify } = useQuasar();
+const { dialog, loading, localStorage } = useQuasar();
+const { successNotify } = useApp();
 const showLoginDialog = () => {
   onDialogHide();
   dialog({
     component: LoginDialog,
   }).onOk(() => {
-    notify({
-      message: "Login success",
-      type: "positive",
-      icon: fasCheck,
-    });
+    successNotify("Login success");
   });
 };
 const { register } = useBackend();

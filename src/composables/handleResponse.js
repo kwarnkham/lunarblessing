@@ -1,7 +1,7 @@
-import { useQuasar } from "quasar";
 import { fasCircleExclamation } from "@quasar/extras/fontawesome-v6";
+import useApp from "./app";
 export default function useHandleResponse() {
-  const { notify } = useQuasar();
+  const { errorNotify } = useApp();
   const defaultMessage =
     "Opps! Something went wrong. Please contact the system developer.";
   const handleResponse = (e) => {
@@ -11,30 +11,12 @@ export default function useHandleResponse() {
       const errors = e.response.data.errors;
       const errorKeys = Object.keys(errors);
       errorKeys.forEach((key) => (message += errors[key]));
-      notify({
-        message,
-        type: "negative",
-        icon: fasCircleExclamation,
-      });
+      errorNotify(message);
     } else if (e.response?.status == 401) {
-      notify({
-        message: "Mobile and password doesn't match",
-        type: "negative",
-        icon: fasCircleExclamation,
-      });
+      errorNotify("Mobile and password doesn't match");
     } else {
-      if (e.response)
-        notify({
-          message: e.response.data.message || defaultMessage,
-          type: "negative",
-          icon: fasCircleExclamation,
-        });
-      else
-        notify({
-          message: e.message,
-          type: "negative",
-          icon: fasCircleExclamation,
-        });
+      if (e.response) errorNotify(e.response.data.message || defaultMessage);
+      else errorNotify(e.message);
     }
   };
 

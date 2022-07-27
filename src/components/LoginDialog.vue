@@ -44,8 +44,9 @@ import RegisterDialog from "src/components/RegisterDialog";
 import useBackend from "src/composables/backend";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { fasCheck, fabFacebook } from "@quasar/extras/fontawesome-v6";
+import { fabFacebook } from "@quasar/extras/fontawesome-v6";
 import useFb from "src/composables/fb";
+import useApp from "src/composables/app";
 
 const mobile = ref("");
 const password = ref("");
@@ -56,16 +57,13 @@ const fbLogin = () => {
   });
 };
 const { dialog, localStorage, notify } = useQuasar();
+const { successNotify } = useApp();
 const showRegisterDialog = () => {
   onDialogCancel();
   dialog({
     component: RegisterDialog,
   }).onOk(() => {
-    notify({
-      message: "Register success",
-      type: "positive",
-      icon: fasCheck,
-    });
+    successNotify("Register success");
   });
 };
 const { login } = useBackend();

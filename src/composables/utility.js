@@ -1,12 +1,14 @@
-import { copyToClipboard, Notify } from "quasar";
+import { copyToClipboard } from "quasar";
 // import { useStore } from "src/stores/store";
 import { date } from "quasar";
+import useApp from "./app";
 // destructuring to keep only what is needed
 const { formatDate } = date;
 
 export default function useUtility() {
   // const store = useStore();
   // import store from "src/store";
+  const { infoNotify } = useApp();
   const readPicture = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -91,10 +93,7 @@ export default function useUtility() {
   };
   const copyLinkToClipboard = (content) => {
     copyToClipboard(content).then((_) => {
-      Notify.create({
-        message: `"${content}" has been copied`,
-        type: "info",
-      });
+      infoNotify(`"${content}" has been copied`);
     });
   };
 

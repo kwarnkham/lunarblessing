@@ -90,5 +90,16 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+    updateUser: async (data) => {
+      try {
+        return await api({
+          method: "PUT",
+          url: "/user",
+          data,
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
   };
 }

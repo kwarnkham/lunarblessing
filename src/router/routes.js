@@ -38,6 +38,11 @@ const routes = [
         component: () => import("pages/SettingPage.vue"),
         name: "setting",
       },
+      {
+        path: "edit-info",
+        component: () => import("pages/EditInfoPage.vue"),
+        name: "editInfo",
+      },
     ],
   },
 

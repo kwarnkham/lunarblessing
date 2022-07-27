@@ -127,6 +127,7 @@ import {
   fasRightFromBracket,
   fasRightToBracket,
   fasGear,
+  fasReceipt,
 } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
@@ -179,6 +180,11 @@ const drawerItems = [
     icon: fasGear,
     label: "Setting",
     routeName: "setting",
+  },
+  {
+    icon: fasReceipt,
+    label: "Orders",
+    routeName: "order",
   },
   {
     icon: fasRightFromBracket,
