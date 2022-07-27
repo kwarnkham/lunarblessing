@@ -31,21 +31,11 @@
             </q-badge>
           </q-btn>
           <q-btn
-            v-if="userStore.getUser"
             flat
             round
             :icon="fasBars"
             size="md"
             @click="leftDrawerOpen = true"
-            color="info"
-          />
-          <q-btn
-            v-else
-            flat
-            round
-            :icon="fasRightToBracket"
-            size="md"
-            @click="showLoginDialog"
             color="info"
           />
         </div>
@@ -79,22 +69,26 @@
       elevated
     >
       <q-list separator padding class="bg-amber-1">
-        <q-item
-          clickable
-          @click="item.action"
-          v-for="item in drawerItems"
-          :key="item.label"
-          :to="{ name: item.routeName }"
-          exact-active-class="bg-blue-grey-6 text-white"
-        >
-          <q-item-section avatar>
-            <q-icon :name="item.icon" color="secondary" />
-          </q-item-section>
-
-          <q-item-section class="text-subtitle1">
-            {{ item.label }}
-          </q-item-section>
-        </q-item>
+        <template v-for="item in drawerItems" :key="item.label">
+          <q-item
+            clickable
+            @click="item.action"
+            :to="{ name: item.routeName }"
+            exact-active-class="bg-blue-grey-6 text-white"
+            v-if="!item.hidden"
+            :class="{
+              hidden:
+                item.routeName == 'cart' && cartStore.getItems.length <= 0,
+            }"
+          >
+            <q-item-section avatar>
+              <q-icon :name="item.icon" color="secondary" />
+            </q-item-section>
+            <q-item-section class="text-subtitle1">
+              {{ item.label }}
+            </q-item-section>
+          </q-item>
+        </template>
       </q-list>
     </q-drawer>
 
@@ -128,12 +122,14 @@ import {
   fasRightToBracket,
   fasGear,
   fasReceipt,
+  fasClover,
+  fasHouse,
 } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
 import { useCartStore } from "src/stores/cart";
 import { useUserStore } from "src/stores/user";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const cartStore = useCartStore();
@@ -175,24 +171,52 @@ const logout = () => {
   });
 };
 
-const drawerItems = [
+const drawerItems = computed(() => [
   {
-    icon: fasGear,
-    label: "Setting",
-    routeName: "setting",
+    icon: fasHouse,
+    label: "Home",
+    routeName: "index",
+    hidden: false,
+  },
+  {
+    icon: fasCartShopping,
+    label: "Cart",
+    routeName: "cart",
+    hidden: false,
+  },
+  {
+    icon: fasClover,
+    label: "Lamps",
+    routeName: "lamp",
+    hidden: false,
   },
   {
     icon: fasReceipt,
     label: "Orders",
     routeName: "order",
+    hidden: !userStore.getUser,
+  },
+  {
+    icon: fasGear,
+    label: "Setting",
+    routeName: "setting",
+    hidden: !userStore.getUser,
   },
   {
     icon: fasRightFromBracket,
     label: "Logout",
     action: logout,
     routeName: "logout",
+    hidden: !userStore.getUser,
   },
-];
+  {
+    icon: fasRightToBracket,
+    label: "Login",
+    action: showLoginDialog,
+    routeName: "login",
+    hidden: userStore.getUser,
+  },
+]);
 const logoUrl =
   process.env.ASSET_URL +
   "/assets/logos/lunarblessings/lunarblessings/lb-logo.png";

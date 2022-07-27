@@ -1,6 +1,6 @@
 <template>
-  <q-page padding>
-    <q-form @submit.prevent="submit">
+  <q-page padding class="flex flex-center">
+    <q-form @submit.prevent="submit" class="full-width">
       <q-input :label="'Name'" v-model="name" required> </q-input>
       <q-input :label="'Mobile'" v-model="mobile" required> </q-input>
       <q-input :label="'Address'" v-model="address" required type="textarea">

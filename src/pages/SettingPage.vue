@@ -1,9 +1,24 @@
 <template>
-  <q-page padding>
-    <q-card @click="$router.push({ name: 'editInfo' })">
-      <q-card-section> Edit User Info </q-card-section>
+  <q-page padding class="q-gutter-y-xs">
+    <q-card
+      v-for="setting in settings"
+      :key="setting.label"
+      @click="$router.push({ name: setting.routeName })"
+    >
+      <q-card-section> {{ setting.label }} </q-card-section>
     </q-card>
   </q-page>
 </template>
 
-<script setup></script>
+<script setup>
+const settings = [
+  {
+    label: "Edit User Info",
+    routeName: "editInfo",
+  },
+  {
+    label: "Change Password",
+    routeName: "changePassword",
+  },
+];
+</script>

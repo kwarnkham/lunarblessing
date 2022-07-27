@@ -44,15 +44,26 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import useBackend from "src/composables/backend";
 import useUtility from "src/composables/utility";
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 const orderPage = ref(null);
 const { parseDate } = useUtility();
 const { fetchOrders } = useBackend();
+const { dialog } = useQuasar();
+const router = useRouter();
 onMounted(() => {
   fetchOrders().then((data) => {
     orderPage.value = data;
+    if (data.data.length <= 0) {
+      dialog({
+        title: "You don't have any order yet.",
+      }).onDismiss(() => {
+        router.replace({ name: "lamp" });
+      });
+    }
   });
 });
 </script>
