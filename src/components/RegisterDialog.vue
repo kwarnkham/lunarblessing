@@ -26,10 +26,19 @@
       </q-card-section>
       <q-card-actions align="right">
         <q-btn
-          label="Already registered? Login here."
+          label="Friend ? Login here."
           @click="showLoginDialog"
           no-caps
           flat
+        />
+        <q-btn
+          label="Login with"
+          :icon-right="fabFacebook"
+          @click="fbLogin"
+          no-caps
+          glossy
+          rounded
+          class="fb-color"
         />
       </q-card-actions>
     </q-card>
@@ -43,7 +52,8 @@ import LoginDialog from "src/components/LoginDialog";
 import useBackend from "src/composables/backend";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { fasCheck } from "@quasar/extras/fontawesome-v6";
+import { fasCheck, fabFacebook } from "@quasar/extras/fontawesome-v6";
+import useFb from "src/composables/fb";
 
 const mobile = ref("");
 const name = ref("");
@@ -64,6 +74,14 @@ const showLoginDialog = () => {
 };
 const { register } = useBackend();
 const userStore = useUserStore();
+
+const { loginWithFb } = useFb();
+const fbLogin = () => {
+  loginWithFb().then((_) => {
+    onDialogOK();
+  });
+};
+
 const submit = () => {
   loading.show();
   register({

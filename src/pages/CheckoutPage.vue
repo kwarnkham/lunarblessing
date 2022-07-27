@@ -26,7 +26,6 @@
         </q-btn>
         <div v-else class="row justify-around full-width">
           <q-btn @click="showLoginDialog" no-caps>Login</q-btn>
-          <q-btn @click="loginViaFacebook" no-caps>Login with Facebook</q-btn>
         </div>
       </div>
     </q-form>
@@ -36,24 +35,19 @@
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
 import { fasPhone } from "@quasar/extras/fontawesome-v6";
-import { useQuasar } from "quasar";
-import LoginDialog from "src/components/LoginDialog";
 import { useUserStore } from "src/stores/user";
 import useBackend from "src/composables/backend";
 import { useCartStore } from "src/stores/cart";
 import { useRouter } from "vue-router";
-import { fasCheck } from "@quasar/extras/fontawesome-v6";
-import useFb from "src/composables/fb";
+import useApp from "src/composables/app";
 
 const checkoutForm = ref(null);
-const { dialog } = useQuasar();
 const name = ref("");
 const mobile = ref("");
 const address = ref("");
 const cartStore = useCartStore();
 const userStore = useUserStore();
 const router = useRouter();
-const { notify } = useQuasar();
 const submit = () => {
   makeOrder({
     name: name.value,
@@ -74,22 +68,8 @@ const submit = () => {
     });
   });
 };
-const { loginWithFb } = useFb();
-const loginViaFacebook = () => {
-  loginWithFb();
-};
 
-const showLoginDialog = () => {
-  dialog({
-    component: LoginDialog,
-  }).onOk(() => {
-    notify({
-      message: "Login success",
-      type: "positive",
-      icon: fasCheck,
-    });
-  });
-};
+const { showLoginDialog } = useApp();
 const { makeOrder } = useBackend();
 const user = computed(() => userStore.getUser);
 const fillForm = () => {

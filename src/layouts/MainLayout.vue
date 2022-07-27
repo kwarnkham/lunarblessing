@@ -39,6 +39,15 @@
             @click="leftDrawerOpen = true"
             color="info"
           />
+          <q-btn
+            v-else
+            flat
+            round
+            :icon="fasRightToBracket"
+            size="md"
+            @click="showLoginDialog"
+            color="info"
+          />
         </div>
       </q-toolbar>
 
@@ -70,12 +79,21 @@
       elevated
     >
       <q-list separator padding class="bg-amber-1">
-        <q-item clickable @click="logout">
+        <q-item
+          clickable
+          @click="item.action"
+          v-for="item in drawerItems"
+          :key="item.label"
+          :to="{ name: item.routeName }"
+          exact-active-class="bg-blue-grey-6 text-white"
+        >
           <q-item-section avatar>
-            <q-icon :name="fasRightFromBracket" color="secondary" />
+            <q-icon :name="item.icon" color="secondary" />
           </q-item-section>
 
-          <q-item-section class="text-subtitle1"> Logout </q-item-section>
+          <q-item-section class="text-subtitle1">
+            {{ item.label }}
+          </q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
@@ -107,8 +125,11 @@ import {
   fasChevronLeft,
   fasBars,
   fasRightFromBracket,
+  fasRightToBracket,
+  fasGear,
 } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
+import useApp from "src/composables/app";
 import { useCartStore } from "src/stores/cart";
 import { useUserStore } from "src/stores/user";
 import { ref } from "vue";
@@ -118,6 +139,7 @@ const cartStore = useCartStore();
 const leftDrawerOpen = ref(false);
 const { localStorage, dialog } = useQuasar();
 const userStore = useUserStore();
+const { showLoginDialog } = useApp();
 
 // const tabs = [
 //   {
@@ -151,6 +173,20 @@ const logout = () => {
     leftDrawerOpen.value = false;
   });
 };
+
+const drawerItems = [
+  {
+    icon: fasGear,
+    label: "Setting",
+    routeName: "setting",
+  },
+  {
+    icon: fasRightFromBracket,
+    label: "Logout",
+    action: logout,
+    routeName: "logout",
+  },
+];
 const logoUrl =
   process.env.ASSET_URL +
   "/assets/logos/lunarblessings/lunarblessings/lb-logo.png";

@@ -33,6 +33,11 @@ const routes = [
         component: () => import("pages/OrderPage.vue"),
         name: "order",
       },
+      {
+        path: "setting",
+        component: () => import("pages/SettingPage.vue"),
+        name: "setting",
+      },
     ],
   },
 

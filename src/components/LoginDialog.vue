@@ -18,10 +18,19 @@
       </q-card-section>
       <q-card-actions align="right">
         <q-btn
-          label="Don't have an account? Register here."
+          label="New guy? Register here."
           @click="showRegisterDialog"
           no-caps
           flat
+        />
+        <q-btn
+          label="Login with"
+          :icon-right="fabFacebook"
+          @click="fbLogin"
+          no-caps
+          glossy
+          rounded
+          class="fb-color"
         />
       </q-card-actions>
     </q-card>
@@ -35,10 +44,17 @@ import RegisterDialog from "src/components/RegisterDialog";
 import useBackend from "src/composables/backend";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { fasCheck } from "@quasar/extras/fontawesome-v6";
+import { fasCheck, fabFacebook } from "@quasar/extras/fontawesome-v6";
+import useFb from "src/composables/fb";
 
 const mobile = ref("");
 const password = ref("");
+const { loginWithFb } = useFb();
+const fbLogin = () => {
+  loginWithFb().then((_) => {
+    onDialogOK();
+  });
+};
 const { dialog, localStorage, notify } = useQuasar();
 const showRegisterDialog = () => {
   onDialogCancel();
