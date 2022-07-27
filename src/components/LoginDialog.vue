@@ -35,27 +35,34 @@ import RegisterDialog from "src/components/RegisterDialog";
 import useBackend from "src/composables/backend";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
+import { fasCheck } from "@quasar/extras/fontawesome-v6";
 
 const mobile = ref("");
 const password = ref("");
-const { dialog, localStorage } = useQuasar();
+const { dialog, localStorage, notify } = useQuasar();
 const showRegisterDialog = () => {
   onDialogCancel();
   dialog({
     component: RegisterDialog,
+  }).onOk(() => {
+    notify({
+      message: "Register success",
+      type: "positive",
+      icon: fasCheck,
+    });
   });
 };
 const { login } = useBackend();
-const { setUser } = useUserStore();
+const userStore = useUserStore();
 const submit = () => {
   login({
     mobile: mobile.value,
     password: password.value,
   }).then(({ user, token }) => {
-    console.log(user, token);
     localStorage.set("token", token);
     api.defaults.headers.common["Authorization"] = "Bearer " + token;
-    setUser(user);
+    userStore.setUser(user);
+    onDialogOK();
   });
 };
 const props = defineProps({

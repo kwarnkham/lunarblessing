@@ -80,7 +80,7 @@ const quote = ref("");
 const dimmedLid = ref(true);
 const switchedOn = ref(true);
 const switching = ref(false);
-const cart = useCartStore();
+const cartStore = useCartStore();
 const { dialog } = useQuasar();
 const router = useRouter();
 const addToCart = () => {
@@ -96,7 +96,7 @@ const addToCart = () => {
     selectedItem.value.text = quote.value;
     selectedItem.value.dimmed_lid = dimmedLid.value;
     selectedItem.value.quantity = quantity;
-    cart.addItem(selectedItem.value);
+    cartStore.addItem(selectedItem.value);
     dialog({
       title: "Check the cart now?",
       persistent: true,

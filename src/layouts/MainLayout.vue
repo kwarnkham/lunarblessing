@@ -11,17 +11,35 @@
         <div v-else class="row justify-between">
           <q-icon :name="fasChevronLeft" size="sm" @click="$router.go(-1)" />
         </div>
-        <q-icon
-          :name="fasCartShopping"
-          size="md"
-          @click="$router.push({ name: 'cart' })"
-          v-if="getItems.length"
-          color="info"
-        >
-          <q-badge color="secondary" floating transparent>
-            {{ getItems.length }}
-          </q-badge>
-        </q-icon>
+        <div>
+          <q-btn
+            flat
+            round
+            :icon="fasCartShopping"
+            size="md"
+            @click="$router.push({ name: 'cart' })"
+            v-if="cartStore.getItems.length"
+            color="info"
+          >
+            <q-badge color="secondary" floating transparent>
+              {{
+                cartStore.getItems.reduce(
+                  (carry, item) => item.quantity + carry,
+                  0
+                )
+              }}
+            </q-badge>
+          </q-btn>
+          <q-btn
+            v-if="userStore.getUser"
+            flat
+            round
+            :icon="fasBars"
+            size="md"
+            @click="leftDrawerOpen = true"
+            color="info"
+          />
+        </div>
       </q-toolbar>
 
       <!-- <q-tabs
@@ -43,7 +61,7 @@
         </q-route-tab>
       </q-tabs> -->
     </q-header>
-    <!--
+
     <q-drawer
       v-model="leftDrawerOpen"
       side="left"
@@ -51,8 +69,16 @@
       behavior="mobile"
       elevated
     >
+      <q-list separator padding class="bg-amber-1">
+        <q-item clickable @click="logout">
+          <q-item-section avatar>
+            <q-icon :name="fasRightFromBracket" color="secondary" />
+          </q-item-section>
 
-    </q-drawer> -->
+          <q-item-section class="text-subtitle1"> Logout </q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
 
     <q-page-container>
       <router-view class="bg-grey-4" />
@@ -79,10 +105,20 @@ import {
   fabFacebook,
   fasCartShopping,
   fasChevronLeft,
+  fasBars,
+  fasRightFromBracket,
 } from "@quasar/extras/fontawesome-v6";
+import { useQuasar } from "quasar";
 import { useCartStore } from "src/stores/cart";
+import { useUserStore } from "src/stores/user";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const { getItems } = useCartStore();
+const cartStore = useCartStore();
+const leftDrawerOpen = ref(false);
+const { localStorage, dialog } = useQuasar();
+const userStore = useUserStore();
+
 // const tabs = [
 //   {
 //     routeName: "index",
@@ -93,6 +129,28 @@ const { getItems } = useCartStore();
 //     label: "Lamp",
 //   },
 // ];
+
+const router = useRouter();
+const logout = () => {
+  dialog({
+    title: "Do you want to logout?",
+    persistent: true,
+    cancel: {
+      noCaps: true,
+      flat: true,
+    },
+    ok: {
+      flat: true,
+      noCaps: true,
+      label: "Logout",
+    },
+  }).onOk(() => {
+    localStorage.remove("token");
+    router.push({ name: "index" });
+    userStore.setUser(null);
+    leftDrawerOpen.value = false;
+  });
+};
 const logoUrl =
   process.env.ASSET_URL +
   "/assets/logos/lunarblessings/lunarblessings/lb-logo.png";

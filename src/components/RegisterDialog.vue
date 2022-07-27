@@ -43,19 +43,27 @@ import LoginDialog from "src/components/LoginDialog";
 import useBackend from "src/composables/backend";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
+import { fasCheck } from "@quasar/extras/fontawesome-v6";
+
 const mobile = ref("");
 const name = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
-const { dialog, loading, localStorage } = useQuasar();
+const { dialog, loading, localStorage, notify } = useQuasar();
 const showLoginDialog = () => {
   onDialogHide();
   dialog({
     component: LoginDialog,
+  }).onOk(() => {
+    notify({
+      message: "Login success",
+      type: "positive",
+      icon: fasCheck,
+    });
   });
 };
 const { register } = useBackend();
-const { setUser } = useUserStore();
+const userStore = useUserStore();
 const submit = () => {
   loading.show();
   register({
@@ -65,10 +73,10 @@ const submit = () => {
     password_confirmation: passwordConfirm.value,
   })
     .then(({ token, user }) => {
-      console.log(token, user);
       localStorage.set("token", token);
       api.defaults.headers.common["Authorization"] = "Bearer " + token;
-      setUser(user);
+      userStore.setUser(user);
+      onDialogOK();
     })
     .finally(() => {
       loading.hide();

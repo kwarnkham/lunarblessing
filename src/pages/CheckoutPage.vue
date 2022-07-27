@@ -21,7 +21,7 @@
         type="textarea"
       ></q-input>
       <div class="q-mt-sm row justify-around">
-        <q-btn v-if="getUser" push color="positive" no-caps type="submit">
+        <q-btn v-if="user" push color="positive" no-caps type="submit">
           Make Order
         </q-btn>
         <q-btn @click="showLoginDialog" v-else no-caps>Login</q-btn>
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { fasPhone } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import LoginDialog from "src/components/LoginDialog";
@@ -39,24 +39,27 @@ import { useUserStore } from "src/stores/user";
 import useBackend from "src/composables/backend";
 import { useCartStore } from "src/stores/cart";
 import { useRouter } from "vue-router";
+import { fasCheck } from "@quasar/extras/fontawesome-v6";
+
 const checkoutForm = ref(null);
 const { dialog } = useQuasar();
 const name = ref("");
 const mobile = ref("");
 const address = ref("");
-const { getItems, clearCart } = useCartStore();
-const { setAddress } = useUserStore();
+const cartStore = useCartStore();
+const userStore = useUserStore();
 const router = useRouter();
+const { notify } = useQuasar();
 const submit = () => {
   makeOrder({
     name: name.value,
     mobile: mobile.value,
     address: address.value,
-    items: getItems,
+    items: cartStore.getItems,
   }).then((order) => {
-    clearCart();
-    if (!getUser.addresss) {
-      setAddress(address.value);
+    cartStore.clearCart();
+    if (!user.value.addresss) {
+      userStore.setAddress(address.value);
     }
 
     router.push({
@@ -71,19 +74,32 @@ const submit = () => {
 const showLoginDialog = () => {
   dialog({
     component: LoginDialog,
+  }).onOk(() => {
+    notify({
+      message: "Login success",
+      type: "positive",
+      icon: fasCheck,
+    });
   });
 };
 const { makeOrder } = useBackend();
-const { getUser } = useUserStore();
+const user = computed(() => userStore.getUser);
+const fillForm = () => {
+  name.value = user.value.name;
+  mobile.value = user.value.mobile;
+  address.value = user.value.address;
+};
+
+watch(user, (data) => {
+  if (data) {
+    fillForm();
+  }
+});
 onMounted(() => {
-  if (getItems.length <= 0)
+  if (cartStore.getItems.length <= 0)
     router.replace({
       name: "lamp",
     });
-  else if (getUser) {
-    name.value = getUser.name;
-    mobile.value = getUser.mobile;
-    address.value = getUser.address;
-  }
+  else if (user.value) fillForm();
 });
 </script>

@@ -8,7 +8,7 @@ import { api } from "./axios";
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
 export default boot(async ({ store }) => {
   if (api.defaults.headers.common["Authorization"]) {
-    const { setUser } = useUserStore(store);
+    const userStore = useUserStore(store);
     const user = await api({
       method: "GET",
       url: "check-token",
@@ -20,11 +20,11 @@ export default boot(async ({ store }) => {
           api.defaults.headers.common["Authorization"] = undefined;
         }
       });
-    setUser(user);
+    userStore.setUser(user);
   }
 
-  const { $onAction: subscribeCart } = useCartStore();
-  subscribeCart(({ after }) => {
+  const cartStore = useCartStore();
+  cartStore.$onAction(({ after }) => {
     after((result) => {
       LocalStorage.set("cartItems", result);
     });
