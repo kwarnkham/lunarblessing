@@ -14,9 +14,9 @@
           "
         >
           <q-item-section>
-            <q-item-label
-              >Status: {{ parseOrderStatus(order.status) }}</q-item-label
-            >
+            <q-item-label>
+              Code : <strong>{{ order.code }}</strong>
+            </q-item-label>
             <q-item-label caption lines="3">
               The amount of this order is
               {{
@@ -33,11 +33,14 @@
               }}
               item(s) in total.
             </q-item-label>
+            <q-item-label>
+              {{ parseDate(order.updated_at) }}
+            </q-item-label>
           </q-item-section>
 
-          <q-item-section side top>
-            <q-item-label caption>
-              {{ parseDate(order.updated_at) }}
+          <q-item-section side>
+            <q-item-label>
+              {{ parseOrderStatus(order.status) }}
             </q-item-label>
           </q-item-section>
         </q-item>

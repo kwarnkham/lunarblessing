@@ -1,6 +1,14 @@
 <template>
   <q-page padding v-if="order">
     <div class="text-subtitle1 text-center">Order Details</div>
+    <div>
+      Code:
+      <q-btn
+        :label="order.code"
+        dense
+        @click="copyLinkToClipboard(order.code)"
+      />
+    </div>
     <div class="text-subtitle2">
       The status of the order is
       <span class="text-weight-bold">
@@ -123,7 +131,8 @@ import PictureDialog from "src/components/PictureDialog";
 
 const route = useRoute();
 const userStore = useUserStore();
-const { parseDate, isAdmin, formatCurrency } = useUtility();
+const { parseDate, isAdmin, formatCurrency, copyLinkToClipboard } =
+  useUtility();
 const order = ref(null);
 const { dialog } = useQuasar();
 const { infoNotify, parseOrderStatus } = useApp();
