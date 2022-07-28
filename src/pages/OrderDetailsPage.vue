@@ -8,10 +8,11 @@
       </span>
       <div class="text-overline">({{ parseDate(order.updated_at) }})</div>
       <div
-        class="text-center"
+        class="row justify-around"
         v-if="order.status == 1 && !isAdmin(userStore.getUser)"
       >
         <q-btn label="Cancel Order" no-caps @click="cancel" />
+        <q-btn label="Pay order" no-caps @click="showPaymentsDialog" />
       </div>
       <div class="text-center" v-if="isAdmin(userStore.getUser)">
         <q-btn label="Update Order" no-caps @click="update" />
@@ -95,7 +96,8 @@ import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
 import { useUserStore } from "src/stores/user";
-import { number } from "@intlify/core-base";
+import PaymentsDialog from "src/components/PaymentsDialog";
+
 const route = useRoute();
 const userStore = useUserStore();
 const { parseDate, isAdmin } = useUtility();
@@ -103,6 +105,15 @@ const order = ref(null);
 const { dialog } = useQuasar();
 const { infoNotify } = useApp();
 const { updateOrder } = useBackend();
+
+const showPaymentsDialog = () => {
+  dialog({
+    component: PaymentsDialog,
+    componentProps: {
+      amount: 1000,
+    },
+  });
+};
 const cancel = () => {
   dialog({
     title: "Cancel the order? :-(",

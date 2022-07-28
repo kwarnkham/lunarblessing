@@ -124,5 +124,17 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+
+    fetchPayments: async (params) => {
+      try {
+        return await api({
+          method: "GET",
+          url: "/payment",
+          params,
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
   };
 }

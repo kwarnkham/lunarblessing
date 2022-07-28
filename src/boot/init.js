@@ -3,6 +3,7 @@ import { boot } from "quasar/wrappers";
 import { useUserStore } from "src/stores/user";
 import { useCartStore } from "src/stores/cart";
 import { api } from "./axios";
+import { usePaymentStore } from "src/stores/payment";
 
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
@@ -23,6 +24,16 @@ export default boot(async ({ store, router }) => {
       });
     userStore.setUser(user);
   }
+
+  const payments = await api({
+    method: "GET",
+    url: "payment",
+    params: {
+      active: 1,
+    },
+  }).then(({ data }) => data);
+  const paymentStore = usePaymentStore();
+  paymentStore.setPayments(payments);
 
   const cartStore = useCartStore();
   cartStore.$onAction(({ after }) => {
