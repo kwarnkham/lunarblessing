@@ -7,8 +7,14 @@
         "{{ parseOrderStatus(order.status) }}"
       </span>
       <div class="text-overline">({{ parseDate(order.updated_at) }})</div>
-      <div class="text-center" v-if="order.status == 1">
+      <div
+        class="text-center"
+        v-if="order.status == 1 && !isAdmin(userStore.getUser)"
+      >
         <q-btn label="Cancel Order" no-caps @click="cancel" />
+      </div>
+      <div class="text-center" v-if="isAdmin(userStore.getUser)">
+        <q-btn label="Update Order" no-caps @click="update" />
       </div>
       <q-expansion-item
         expand-separator
@@ -88,12 +94,15 @@ import { useRoute, useRouter } from "vue-router";
 import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
+import { useUserStore } from "src/stores/user";
+import { number } from "@intlify/core-base";
 const route = useRoute();
-const { parseDate } = useUtility();
+const userStore = useUserStore();
+const { parseDate, isAdmin } = useUtility();
 const order = ref(null);
 const { dialog } = useQuasar();
 const { infoNotify } = useApp();
-const { cancelOrder } = useBackend();
+const { updateOrder } = useBackend();
 const cancel = () => {
   dialog({
     title: "Cancel the order? :-(",
@@ -106,12 +115,30 @@ const cancel = () => {
       noCaps: true,
     },
   }).onOk(() => {
-    cancelOrder(order.value).then((data) => {
+    updateOrder(order.value, { status: 5 }).then((data) => {
       if (data) {
         order.value = data;
         infoNotify("Order has been canceled");
       }
     });
+  });
+};
+const update = () => {
+  dialog({
+    title: "Update order status",
+    prompt: {
+      model: order.value.status,
+      type: "tel",
+      isValid: (val) => [1, 2, 3, 4, 5].includes(Number(val)),
+    },
+  }).onOk((status) => {
+    if (order.value.status != status)
+      updateOrder(order.value, { status }).then((data) => {
+        if (data) {
+          order.value = data;
+          infoNotify("Order has been updated to " + parseOrderStatus(status));
+        }
+      });
   });
 };
 const parseOrderStatus = (status) => {
@@ -137,7 +164,7 @@ const router = useRouter();
 onMounted(() => {
   fetchAnOrder(route.params.id).then((data) => {
     if (data) order.value = data;
-    else router.replace({ name: "index  " });
+    else router.replace({ name: "index" });
   });
 });
 </script>

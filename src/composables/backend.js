@@ -112,14 +112,13 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
-    cancelOrder: async (order) => {
+
+    updateOrder: async (order, data) => {
       try {
         return await api({
           method: "POST",
           url: "/order/status/" + order.id,
-          data: {
-            status: "5",
-          },
+          data,
         }).then(({ data }) => data);
       } catch (error) {
         handleResponse(error);
