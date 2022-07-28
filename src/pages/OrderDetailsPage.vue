@@ -7,6 +7,9 @@
         "{{ parseOrderStatus(order.status) }}"
       </span>
       <div class="text-overline">({{ parseDate(order.updated_at) }})</div>
+      <div class="text-center" v-if="order.status == 1">
+        <q-btn label="Cancel Order" no-caps @click="cancel" />
+      </div>
       <q-expansion-item
         expand-separator
         label="Delivery Infomation"
@@ -83,10 +86,36 @@ import useUtility from "src/composables/utility";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
+import { useQuasar } from "quasar";
+import useApp from "src/composables/app";
 const route = useRoute();
 const { parseDate } = useUtility();
 const order = ref(null);
+const { dialog } = useQuasar();
+const { infoNotify } = useApp();
+const { cancelOrder } = useBackend();
+const cancel = () => {
+  dialog({
+    title: "Cancel the order? :-(",
+    cancel: {
+      label: "No, keep it",
+      noCaps: true,
+    },
+    ok: {
+      label: "Yes, cancel it",
+      noCaps: true,
+    },
+  }).onOk(() => {
+    cancelOrder(order.value).then((data) => {
+      if (data) {
+        order.value = data;
+        infoNotify("Order has been canceled");
+      }
+    });
+  });
+};
 const parseOrderStatus = (status) => {
+  status = Number(status);
   switch (status) {
     case 1:
       return "Pending";
@@ -108,7 +137,7 @@ const router = useRouter();
 onMounted(() => {
   fetchAnOrder(route.params.id).then((data) => {
     if (data) order.value = data;
-    else router.replace({ name: "index" });
+    else router.replace({ name: "index  " });
   });
 });
 </script>

@@ -112,5 +112,18 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+    cancelOrder: async (order) => {
+      try {
+        return await api({
+          method: "POST",
+          url: "/order/status/" + order.id,
+          data: {
+            status: "5",
+          },
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
   };
 }
