@@ -11,8 +11,24 @@
         class="row justify-around"
         v-if="order.status == 1 && !isAdmin(userStore.getUser)"
       >
-        <q-btn label="Cancel Order" no-caps @click="cancel" />
-        <q-btn label="Pay order" no-caps @click="showPaymentsDialog" />
+        <q-btn
+          label="Cancel Order"
+          no-caps
+          @click="cancel"
+          v-if="!order.screenshot"
+        />
+        <q-btn
+          label="Pay order"
+          no-caps
+          @click="showPaymentsDialog"
+          v-if="!order.screenshot"
+        />
+        <q-btn
+          label="Show paid screenshot"
+          no-caps
+          @click="showPaidScreenshot"
+          v-else
+        />
       </div>
       <div class="text-center" v-if="isAdmin(userStore.getUser)">
         <q-btn label="Update Order" no-caps @click="update" />
@@ -97,6 +113,7 @@ import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
 import { useUserStore } from "src/stores/user";
 import PaymentsDialog from "src/components/PaymentsDialog";
+import PictureDialog from "src/components/PictureDialog";
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -110,9 +127,21 @@ const showPaymentsDialog = () => {
   dialog({
     component: PaymentsDialog,
     componentProps: {
-      amount: 1000,
+      order: order.value,
     },
+  }).onOk((data) => {
+    order.value = data;
   });
+};
+const showPaidScreenshot = () => {
+  if (order.value.screenshot)
+    dialog({
+      title: "Paid screenshot",
+      component: PictureDialog,
+      componentProps: {
+        src: `${process.env.ASSET_URL}/order_paid/${order.value.screenshot}`,
+      },
+    });
 };
 const cancel = () => {
   dialog({

@@ -60,10 +60,6 @@ export default function useUtility() {
     return Number(number).toFixed(2);
   };
 
-  const toAssetUrl = (asset) => {
-    return `${process.env.ASSET_URL}/Lucky%20Hi/asset/${asset}`;
-  };
-
   // export const filterSelect = (val, categories) => {
   //   const needle = val.toLowerCase();
   //   categories.value = store.state.categories.filter(
@@ -144,7 +140,6 @@ export default function useUtility() {
     pageOptions,
     twoDigitsStringValue,
     formatCurrency,
-    toAssetUrl,
     isAdmin,
     getQR,
     downloadImage,

@@ -1,8 +1,10 @@
 import { api } from "src/boot/axios";
 import useHandleResponse from "./handleResponse";
+import useUtility from "./utility";
 
 export default function useBackend() {
   const handleResponse = useHandleResponse();
+  const { buildForm } = useUtility();
   return {
     register: async (data) => {
       try {
@@ -131,6 +133,21 @@ export default function useBackend() {
           method: "GET",
           url: "/payment",
           params,
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
+
+    pay: async (order, data) => {
+      try {
+        return await api({
+          method: "POST",
+          url: "/order/pay/" + order.id,
+          data: buildForm(data),
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }).then(({ data }) => data);
       } catch (error) {
         handleResponse(error);

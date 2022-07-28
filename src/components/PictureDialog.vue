@@ -2,42 +2,18 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
       <q-card-section class="row justify-evenly q-gutter-xs">
-        <q-btn
-          v-for="payment in paymentStore.getPayments"
-          :key="payment.id"
-          :label="payment.name"
-          no-caps
-          push
-          color="primary"
-          @click="showPaymentForm(payment)"
-        />
+        <q-img :src="src" />
       </q-card-section>
     </q-card>
   </q-dialog>
 </template>
 
 <script setup>
-import { useDialogPluginComponent, useQuasar } from "quasar";
-import { usePaymentStore } from "src/stores/payment";
-import PaymentFormDialog from "./PaymentFormDialog";
-
-const paymentStore = usePaymentStore();
-const { dialog } = useQuasar();
-const showPaymentForm = (payment) => {
-  dialog({
-    component: PaymentFormDialog,
-    componentProps: {
-      payment,
-      order: props.order,
-    },
-  }).onOk((data) => {
-    onDialogOK(data);
-  });
-};
+import { useDialogPluginComponent } from "quasar";
 
 const props = defineProps({
-  order: {
-    type: Object,
+  src: {
+    type: String,
     required: true,
   },
 });

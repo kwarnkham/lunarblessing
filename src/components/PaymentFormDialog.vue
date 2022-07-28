@@ -74,20 +74,35 @@
 <script setup>
 import { useDialogPluginComponent } from "quasar";
 import useUtility from "src/composables/utility";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import PicturesSelector from "./PicturesSelector.vue";
 import { fasEye, fasTrash, fasXmark } from "@quasar/extras/fontawesome-v6";
+import useBackend from "src/composables/backend";
 
 const { copyLinkToClipboard } = useUtility();
 const selectedPictures = ref([]);
-const submit = () => {};
+const { pay } = useBackend();
+const amount = computed(() =>
+  props.order.items.reduce(
+    (carry, item) => item.pivot.sale_price * item.pivot.quantity + carry,
+    0
+  )
+);
+const submit = () => {
+  pay(props.order, {
+    screenshot: selectedPictures.value[0],
+    payment_id: props.payment.id,
+  }).then((data) => {
+    if (data) onDialogOK(data);
+  });
+};
 const props = defineProps({
   payment: {
     type: Object,
     required: true,
   },
-  amount: {
-    type: Number,
+  order: {
+    type: Object,
     required: true,
   },
 });

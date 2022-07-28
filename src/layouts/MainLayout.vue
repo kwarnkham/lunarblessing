@@ -217,7 +217,5 @@ const drawerItems = computed(() => [
     hidden: userStore.getUser,
   },
 ]);
-const logoUrl =
-  process.env.ASSET_URL +
-  "/assets/logos/lunarblessings/lunarblessings/lb-logo.png";
+const logoUrl = process.env.ASSET_URL + "/asset/logo.png";
 </script>
