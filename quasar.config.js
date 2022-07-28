@@ -85,6 +85,10 @@ module.exports = configure(function (ctx) {
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework
     framework: {
       config: {
+        loading: {
+          spinner: "QSpinnerIos",
+          spinnerSize: "50",
+        },
         brand: {
           primary: "#d1af19",
           secondary: "#95a626",
