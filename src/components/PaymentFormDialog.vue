@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref="dialogRef" @hide="onDialogHide">
+  <q-dialog ref="dialogRef" @hide="onDialogHide" persistent>
     <q-card class="q-dialog-plugin">
       <q-card-section>
         <div class="text-center">
@@ -18,24 +18,69 @@
           <q-btn @click="copyLinkToClipboard(amount)"> {{ amount }} MMK </q-btn>
         </div>
         <q-separator />
-        <div>
+        <div class="text-center">
           Please upload the screenshot of the payment after you have paid
         </div>
+        <q-form class="text-center" @submit.prevent="submit">
+          <PicturesSelector v-model="selectedPictures">
+            <template #showSelectedPictures="{ showPicturesToUpload }">
+              <q-btn
+                no-caps
+                outline
+                color="accent"
+                :icon="fasEye"
+                @click="showPicturesToUpload"
+              />
+            </template>
+            <template #deleteSelectedPictures="{ clearChosenImages }">
+              <q-btn
+                no-caps
+                outline
+                color="negative"
+                :icon="fasTrash"
+                @click="clearChosenImages"
+              />
+            </template>
+            <template #imagePicker="{ chooseImages }">
+              <q-btn
+                color="indigo"
+                @click="chooseImages"
+                no-caps
+                :label="'Upload Payment Screenshot'"
+              />
+            </template>
+            <!-- <template #upload>
+          <q-btn color="primary" @click="upload" no-caps icon="upload" />
+        </template> -->
+          </PicturesSelector>
+          <div class="text-center q-mt-sm">
+            <q-btn
+              :label="'Finish'"
+              color="positive"
+              no-caps
+              type="submit"
+              :disabled="selectedPictures.length <= 0"
+            />
+          </div>
+        </q-form>
       </q-card-section>
+      <q-card-actions align="right">
+        <q-btn :icon="fasXmark" no-caps flat @click="onDialogHide" />
+      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <script setup>
-import { number } from "@intlify/core-base";
-import { useDialogPluginComponent, useQuasar } from "quasar";
+import { useDialogPluginComponent } from "quasar";
 import useUtility from "src/composables/utility";
-import { usePaymentStore } from "src/stores/payment";
+import { ref } from "vue";
+import PicturesSelector from "./PicturesSelector.vue";
+import { fasEye, fasTrash, fasXmark } from "@quasar/extras/fontawesome-v6";
 
-const paymentStore = usePaymentStore();
-const { dialog } = useQuasar();
 const { copyLinkToClipboard } = useUtility();
-
+const selectedPictures = ref([]);
+const submit = () => {};
 const props = defineProps({
   payment: {
     type: Object,
