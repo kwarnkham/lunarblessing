@@ -1,14 +1,14 @@
 <template>
-  <q-page padding>
+  <q-page padding v-if="itemsStore.getItems.length">
     <div
       class="text-subtitle2 text-center row justify-around h-30 overflow-hidden"
     >
       <div class="row fit no-wrap marquee">
-        <div v-for="sign in signs" :key="sign" class="col-1">
-          <q-icon :name="'img:' + sign" size="sm" />
+        <div v-for="image in images" :key="image.id" class="col-1">
+          <q-icon :name="'img:' + getItemImage(image.url)" size="sm" />
         </div>
-        <div v-for="(sign, i) in signs" :key="i" class="col-1">
-          <q-icon :name="'img:' + sign" size="sm" />
+        <div v-for="image in images" :key="image.name" class="col-1">
+          <q-icon :name="'img:' + getItemImage(image.url)" size="sm" />
         </div>
       </div>
     </div>
@@ -54,48 +54,26 @@ import {
   fasLeaf,
 } from "@quasar/extras/fontawesome-v6";
 import { computed, ref } from "vue";
+import { useItemsStore } from "src/stores/items";
+import useApp from "src/composables/app";
 
-const images = [
-  "https://spaces.madewithheart.tech/zo1.jpeg",
-  "https://spaces.madewithheart.tech/zo2.jpeg",
-  "https://spaces.madewithheart.tech/zo3.jpeg",
-  "https://spaces.madewithheart.tech/zo4.jpeg",
-];
-
-const signs = [
-  "https://spaces.madewithheart.tech/assets/aquarius.png",
-  "https://spaces.madewithheart.tech/assets/pisces.png",
-  "https://spaces.madewithheart.tech/assets/aries.png",
-  "https://spaces.madewithheart.tech/assets/taurus.png",
-  "https://spaces.madewithheart.tech/assets/gemini.png",
-  "https://spaces.madewithheart.tech/assets/cancer.png",
-  "https://spaces.madewithheart.tech/assets/leo.png",
-  "https://spaces.madewithheart.tech/assets/virgo.png",
-  "https://spaces.madewithheart.tech/assets/libra.png",
-  "https://spaces.madewithheart.tech/assets/scorpio.png",
-  "https://spaces.madewithheart.tech/assets/sagittarius.png",
-  "https://spaces.madewithheart.tech/assets/capricorn.png",
-];
 const showImage = ref(true);
 const imageIndex = ref(0);
-const marquee = ref(true);
-const playAnimation = () => {
-  setTimeout(
-    () => {
-      marquee.value = !marquee.value;
-    },
-    marquee.value ? 2000 : 0
-  );
-};
-const currentImage = computed(() => images[imageIndex.value]);
+const itemsStore = useItemsStore();
+const images = computed(() =>
+  itemsStore.getItems.map((item) => item.pictures[0])
+);
+const currentImage = computed(() =>
+  getItemImage(images.value[imageIndex.value].url)
+);
 const hideImage = () => {
   setTimeout(() => {
     showImage.value = false;
   }, 2000);
 };
-
+const { getItemImage } = useApp();
 const showNextImage = () => {
-  if (imageIndex.value + 1 < images.length) imageIndex.value++;
+  if (imageIndex.value + 1 < images.value.length) imageIndex.value++;
   else imageIndex.value = 0;
   showImage.value = true;
 };

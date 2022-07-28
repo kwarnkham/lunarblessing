@@ -13,7 +13,11 @@
 
     <div v-if="selectedItem" class="full-width q-gutter-y-sm q-my-sm">
       <div class="bg-amber-1 rounded-borders">
-        <q-img :src="selectedItem.pictures[0].url" class="fit" fit="contain" />
+        <q-img
+          :src="getItemImage(selectedItem.pictures[0].url)"
+          class="fit"
+          fit="contain"
+        />
       </div>
 
       <div class="row justify-around">
@@ -74,6 +78,7 @@ import useBackend from "src/composables/backend";
 import { useCartStore } from "src/stores/cart";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
+import useApp from "src/composables/app";
 
 const selectedItem = ref(null);
 const quote = ref("");
@@ -83,6 +88,7 @@ const switching = ref(false);
 const cartStore = useCartStore();
 const { dialog } = useQuasar();
 const router = useRouter();
+const { getItemImage } = useApp();
 const addToCart = () => {
   dialog({
     title: "Adding to cart",

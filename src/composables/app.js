@@ -42,6 +42,7 @@ export default function useApp() {
     successNotify,
     errorNotify,
     infoNotify,
+    getItemImage: (name) => process.env.ASSET_URL + name,
     parseOrderStatus: (status) => {
       status = Number(status);
       switch (status) {
