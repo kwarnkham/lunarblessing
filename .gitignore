@@ -2,6 +2,7 @@
 .thumbs.db
 node_modules
 
+spa.zip
 # Quasar core related directories
 .quasar
 /dist
