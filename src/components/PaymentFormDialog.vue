@@ -15,7 +15,9 @@
         <q-separator />
         <div class="text-center">
           <div>The Amount you need to pay is</div>
-          <q-btn @click="copyLinkToClipboard(amount)"> {{ amount }} MMK </q-btn>
+          <q-btn @click="copyLinkToClipboard(amount)">
+            {{ formatCurrency(amount) }} MMK
+          </q-btn>
         </div>
         <q-separator />
         <div class="text-center">
@@ -79,7 +81,7 @@ import PicturesSelector from "./PicturesSelector.vue";
 import { fasEye, fasTrash, fasXmark } from "@quasar/extras/fontawesome-v6";
 import useBackend from "src/composables/backend";
 
-const { copyLinkToClipboard } = useUtility();
+const { copyLinkToClipboard, formatCurrency } = useUtility();
 const selectedPictures = ref([]);
 const { pay } = useBackend();
 const amount = computed(() =>

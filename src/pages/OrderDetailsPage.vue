@@ -61,9 +61,11 @@
             <td class="text-left">{{ i + 1 }}</td>
             <td class="text-left">{{ item.name }}</td>
             <td class="text-right">{{ item.pivot.quantity }}</td>
-            <td class="text-right">{{ item.pivot.sale_price }}</td>
             <td class="text-right">
-              {{ item.pivot.sale_price * item.pivot.quantity }}
+              {{ formatCurrency(item.pivot.sale_price) }}
+            </td>
+            <td class="text-right">
+              {{ formatCurrency(item.pivot.sale_price * item.pivot.quantity) }}
             </td>
           </tr>
           <tr>
@@ -78,21 +80,25 @@
             </td>
             <td class="text-right">
               {{
-                order.items.reduce(
-                  (carry, value) => value.pivot.sale_price + carry,
-                  0
+                formatCurrency(
+                  order.items.reduce(
+                    (carry, value) => value.pivot.sale_price + carry,
+                    0
+                  )
                 )
               }}
             </td>
             <td class="text-right">
               {{
-                order.items.reduce(
-                  (carry, value) => value.pivot.sale_price + carry,
-                  0
-                ) *
-                order.items.reduce(
-                  (carry, value) => value.pivot.quantity + carry,
-                  0
+                formatCurrency(
+                  order.items.reduce(
+                    (carry, value) => value.pivot.sale_price + carry,
+                    0
+                  ) *
+                    order.items.reduce(
+                      (carry, value) => value.pivot.quantity + carry,
+                      0
+                    )
                 )
               }}
             </td>
@@ -117,10 +123,10 @@ import PictureDialog from "src/components/PictureDialog";
 
 const route = useRoute();
 const userStore = useUserStore();
-const { parseDate, isAdmin } = useUtility();
+const { parseDate, isAdmin, formatCurrency } = useUtility();
 const order = ref(null);
 const { dialog } = useQuasar();
-const { infoNotify } = useApp();
+const { infoNotify, parseOrderStatus } = useApp();
 const { updateOrder } = useBackend();
 
 const showPaymentsDialog = () => {
@@ -180,24 +186,6 @@ const update = () => {
         }
       });
   });
-};
-const parseOrderStatus = (status) => {
-  status = Number(status);
-  switch (status) {
-    case 1:
-      return "Pending";
-    case 2:
-      return "Confirmed";
-    case 3:
-      return "Dispatched";
-    case 4:
-      return "Completed";
-    case 5:
-      return "Canceled";
-    default:
-      console.warn("unknown order status");
-      return status;
-  }
 };
 const { fetchAnOrder } = useBackend();
 const router = useRouter();

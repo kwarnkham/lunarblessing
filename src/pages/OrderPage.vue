@@ -14,15 +14,20 @@
           "
         >
           <q-item-section>
-            <q-item-label>Status: {{ order.status }}</q-item-label>
+            <q-item-label
+              >Status: {{ parseOrderStatus(order.status) }}</q-item-label
+            >
             <q-item-label caption lines="3">
               The amount of this order is
               {{
-                order.items.reduce(
-                  (carry, el) => el.pivot.sale_price + carry,
-                  0
+                formatCurrency(
+                  order.items.reduce(
+                    (carry, el) => el.pivot.sale_price + carry,
+                    0
+                  )
                 )
-              }}. There are
+              }}
+              MMK. There are
               {{
                 order.items.reduce((carry, el) => el.pivot.quantity + carry, 0)
               }}
@@ -45,15 +50,17 @@
 
 <script setup>
 import { useQuasar } from "quasar";
+import useApp from "src/composables/app";
 import useBackend from "src/composables/backend";
 import useUtility from "src/composables/utility";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 const orderPage = ref(null);
-const { parseDate } = useUtility();
+const { parseDate, formatCurrency } = useUtility();
 const { fetchOrders } = useBackend();
 const { dialog } = useQuasar();
 const router = useRouter();
+const { parseOrderStatus } = useApp();
 onMounted(() => {
   fetchOrders().then((data) => {
     orderPage.value = data;

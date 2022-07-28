@@ -42,5 +42,23 @@ export default function useApp() {
     successNotify,
     errorNotify,
     infoNotify,
+    parseOrderStatus: (status) => {
+      status = Number(status);
+      switch (status) {
+        case 1:
+          return "Pending";
+        case 2:
+          return "Confirmed";
+        case 3:
+          return "Dispatched";
+        case 4:
+          return "Completed";
+        case 5:
+          return "Canceled";
+        default:
+          console.warn("unknown order status");
+          return status;
+      }
+    },
   };
 }
