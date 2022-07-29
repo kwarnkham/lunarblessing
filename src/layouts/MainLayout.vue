@@ -98,14 +98,32 @@
 
     <q-footer elevated class="bg-grey-4 text-white">
       <q-toolbar class="row justify-around no-wrap">
-        <q-toolbar-title class="text-center" shrink>
-          <q-avatar>
-            <img :src="logoUrl" />
-          </q-avatar>
-          <div class="text-accent">Lunar Blessing</div>
-        </q-toolbar-title>
-        <q-icon :name="fasPhone" size="sm" color="accent" />
-        <q-icon :name="fabFacebook" size="sm" class="fb-color" />
+        <q-btn
+          :icon="fasPhone"
+          flat
+          round
+          color="white"
+          class="bg-green-5"
+          @click="contact('phone')"
+        />
+        <q-btn
+          :icon="fabFacebookMessenger"
+          flat
+          round
+          class="messenger-color"
+          dense
+          size="xl"
+          @click="contact('messenger')"
+        />
+        <q-btn
+          :icon="fabFacebook"
+          flat
+          round
+          dense
+          class="fb-color"
+          size="xl"
+          @click="contact('facebook')"
+        />
       </q-toolbar>
     </q-footer>
   </q-layout>
@@ -124,6 +142,7 @@ import {
   fasReceipt,
   fasClover,
   fasHouse,
+  fabFacebookMessenger,
 } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
@@ -148,6 +167,21 @@ const { showLoginDialog } = useApp();
 //     label: "Lamp",
 //   },
 // ];
+const contact = (name) => {
+  switch (name) {
+    case "facebook":
+      window.open("fb:://page/108651881914551");
+      break;
+    case "messenger":
+      window.open("https://m.me/lunarblessingsmm");
+      break;
+    case "phone":
+      window.open("tel:+95943161890");
+      break;
+    default:
+      break;
+  }
+};
 
 const router = useRouter();
 const logout = () => {
