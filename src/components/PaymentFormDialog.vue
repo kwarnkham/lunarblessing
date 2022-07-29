@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { useDialogPluginComponent } from "quasar";
+import { useDialogPluginComponent, useQuasar } from "quasar";
 import useUtility from "src/composables/utility";
 import { computed, ref } from "vue";
 import PicturesSelector from "./PicturesSelector.vue";
@@ -83,6 +83,7 @@ import useBackend from "src/composables/backend";
 
 const { copyLinkToClipboard, formatCurrency } = useUtility();
 const selectedPictures = ref([]);
+const { loading } = useQuasar();
 const { pay } = useBackend();
 const amount = computed(() =>
   props.order.items.reduce(
@@ -91,12 +92,17 @@ const amount = computed(() =>
   )
 );
 const submit = () => {
+  loading.show();
   pay(props.order, {
     screenshot: selectedPictures.value[0],
     payment_id: props.payment.id,
-  }).then((data) => {
-    if (data) onDialogOK(data);
-  });
+  })
+    .then((data) => {
+      if (data) onDialogOK(data);
+    })
+    .finally(() => {
+      loading.hide();
+    });
 };
 const props = defineProps({
   payment: {

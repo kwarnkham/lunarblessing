@@ -75,9 +75,14 @@ const userStore = useUserStore();
 
 const { loginWithFb } = useFb();
 const fbLogin = () => {
-  loginWithFb().then((_) => {
-    onDialogOK();
-  });
+  loading.show();
+  loginWithFb()
+    .then((_) => {
+      onDialogOK();
+    })
+    .finally(() => {
+      loading.hide();
+    });
 };
 
 const submit = () => {

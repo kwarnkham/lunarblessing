@@ -52,11 +52,16 @@ const mobile = ref("");
 const password = ref("");
 const { loginWithFb } = useFb();
 const fbLogin = () => {
-  loginWithFb().then((_) => {
-    onDialogOK();
-  });
+  loading.show();
+  loginWithFb()
+    .then((_) => {
+      onDialogOK();
+    })
+    .finally(() => {
+      loading.hide();
+    });
 };
-const { dialog, localStorage, notify } = useQuasar();
+const { dialog, localStorage, loading } = useQuasar();
 const { successNotify } = useApp();
 const showRegisterDialog = () => {
   onDialogCancel();
@@ -69,15 +74,20 @@ const showRegisterDialog = () => {
 const { login } = useBackend();
 const userStore = useUserStore();
 const submit = () => {
+  loading.show();
   login({
     mobile: mobile.value,
     password: password.value,
-  }).then(({ user, token }) => {
-    localStorage.set("token", token);
-    api.defaults.headers.common["Authorization"] = "Bearer " + token;
-    userStore.setUser(user);
-    onDialogOK();
-  });
+  })
+    .then(({ user, token }) => {
+      localStorage.set("token", token);
+      api.defaults.headers.common["Authorization"] = "Bearer " + token;
+      userStore.setUser(user);
+      onDialogOK();
+    })
+    .finally(() => {
+      loading.hide();
+    });
 };
 const props = defineProps({
   // ...your custom props

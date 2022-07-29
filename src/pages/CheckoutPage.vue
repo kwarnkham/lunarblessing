@@ -40,6 +40,7 @@ import useBackend from "src/composables/backend";
 import { useCartStore } from "src/stores/cart";
 import { useRouter } from "vue-router";
 import useApp from "src/composables/app";
+import { useQuasar } from "quasar";
 
 const checkoutForm = ref(null);
 const name = ref("");
@@ -48,25 +49,31 @@ const address = ref("");
 const cartStore = useCartStore();
 const userStore = useUserStore();
 const router = useRouter();
+const { loading } = useQuasar();
 const submit = () => {
+  loading.show();
   makeOrder({
     name: name.value,
     mobile: mobile.value,
     address: address.value,
     items: cartStore.getItems,
-  }).then((order) => {
-    cartStore.clearCart();
-    if (!user.value.addresss) userStore.setAddress(address.value);
-    if (!user.value.name) userStore.setName(name.value);
-    if (!user.value.mobile) userStore.setMobile(mobile.value);
+  })
+    .then((order) => {
+      cartStore.clearCart();
+      if (!user.value.addresss) userStore.setAddress(address.value);
+      if (!user.value.name) userStore.setName(name.value);
+      if (!user.value.mobile) userStore.setMobile(mobile.value);
 
-    router.push({
-      name: "orderDetails",
-      params: {
-        id: order.id,
-      },
+      router.push({
+        name: "orderDetails",
+        params: {
+          id: order.id,
+        },
+      });
+    })
+    .finally(() => {
+      loading.hide();
     });
-  });
 };
 
 const { showLoginDialog } = useApp();
