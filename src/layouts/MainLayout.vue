@@ -153,7 +153,7 @@ import { useRouter } from "vue-router";
 
 const cartStore = useCartStore();
 const leftDrawerOpen = ref(false);
-const { localStorage, dialog } = useQuasar();
+const { localStorage, dialog, platform } = useQuasar();
 const userStore = useUserStore();
 const { showLoginDialog } = useApp();
 
@@ -167,10 +167,12 @@ const { showLoginDialog } = useApp();
 //     label: "Lamp",
 //   },
 // ];
+
 const contact = (name) => {
   switch (name) {
     case "facebook":
-      window.open("fb:://page/108651881914551");
+      if (platform.is.ios) window.open("fb://profile/108651881914551");
+      else window.open("fb://page/108651881914551");
       break;
     case "messenger":
       window.open("https://m.me/lunarblessingsmm");
