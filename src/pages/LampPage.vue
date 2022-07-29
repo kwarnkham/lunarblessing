@@ -8,6 +8,8 @@
         push
         @click="selectedItem = item"
         :color="selectedItem.id == item.id ? 'primary' : 'grey-6'"
+        dense
+        no-caps
       />
     </div>
 

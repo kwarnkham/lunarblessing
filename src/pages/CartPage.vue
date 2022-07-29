@@ -13,23 +13,27 @@
         </thead>
         <tbody>
           <tr v-for="(item, i) in cartStore.getItems" :key="item.id">
-            <td class="text-left" @click="edit(item)">{{ i + 1 }}</td>
+            <td class="text-left">
+              <q-btn :label="i + 1" dense flat @click="edit(item)" />
+            </td>
             <td class="text-left">{{ item.name }}</td>
             <td class="text-right">{{ item.price }}</td>
             <td class="text-right">
-              {{ item.quantity }}
+              <q-btn :label="item.quantity" dense flat @click="edit(item)" />
             </td>
             <td class="text-right">{{ item.price * item.quantity }}</td>
           </tr>
           <tr>
             <td class="text-right" colspan="3">Total</td>
             <td class="text-right">
-              {{
-                cartStore.getItems.reduce(
-                  (carry, value) => Number(value.quantity) + carry,
-                  0
-                )
-              }}
+              <q-btn dense flat>
+                {{
+                  cartStore.getItems.reduce(
+                    (carry, value) => Number(value.quantity) + carry,
+                    0
+                  )
+                }}
+              </q-btn>
             </td>
 
             <td class="text-right">

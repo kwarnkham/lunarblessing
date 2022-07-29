@@ -73,9 +73,9 @@ const { showLoginDialog } = useApp();
 const { makeOrder } = useBackend();
 const user = computed(() => userStore.getUser);
 const fillForm = () => {
-  name.value = user.value.name;
-  mobile.value = user.value.mobile;
-  address.value = user.value.address;
+  if (user.value.name) name.value = user.value.name;
+  if (user.value.mobile) mobile.value = user.value.mobile;
+  if (user.value.address) address.value = user.value.address;
 };
 
 watch(user, (data) => {
