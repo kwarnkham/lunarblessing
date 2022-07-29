@@ -3,6 +3,9 @@
     <q-card class="q-dialog-plugin">
       <q-card-section class="row justify-evenly q-gutter-xs">
         <q-img :src="src" />
+        <div v-if="text">
+          {{ text }}
+        </div>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -15,6 +18,10 @@ const props = defineProps({
   src: {
     type: String,
     required: true,
+  },
+  text: {
+    type: String,
+    default: "",
   },
 });
 

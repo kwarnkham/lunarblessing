@@ -47,14 +47,35 @@
       :placeholder="'Growing strong'"
       color="secondary"
       v-model="quote"
+      no-error-icon
+      counter
+      type="textarea"
+      :rules="[
+        (val) =>
+          val == '' ? true : val.length <= 60 || 'Keep it a bit shorter please',
+      ]"
     >
       <template v-slot:append>
-        <q-btn :icon="fasInfo" glossy size="xs" round color="info" />
+        <q-btn
+          :icon="fasInfo"
+          glossy
+          size="xs"
+          round
+          color="info"
+          @click="explainEngrave"
+        />
       </template>
     </q-input>
     <div class="q-mt-sm rounded-borders dim-bright-radio">
       <div class="text-center">
-        <q-btn :icon="fasInfo" glossy size="xs" round color="info" />
+        <q-btn
+          :icon="fasInfo"
+          glossy
+          size="xs"
+          round
+          color="info"
+          @click="explainDimmedLid"
+        />
       </div>
       <div class="text-center">
         <q-radio :label="'Bright Lid'" v-model="dimmedLid" :val="true" />
@@ -81,6 +102,7 @@ import { useCartStore } from "src/stores/cart";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 import useApp from "src/composables/app";
+import PictureDialog from "src/components/PictureDialog";
 
 const selectedItem = ref(null);
 const quote = ref("");
@@ -91,6 +113,24 @@ const cartStore = useCartStore();
 const { dialog } = useQuasar();
 const router = useRouter();
 const { getItemImage } = useApp();
+const explainEngrave = () => {
+  dialog({
+    component: PictureDialog,
+    componentProps: {
+      src: "https://spaces.madewithheart.tech/lunarblessing_dev/asset/aries.png",
+      text: "We engrave the text you provided to the lamp.",
+    },
+  });
+};
+const explainDimmedLid = () => {
+  dialog({
+    component: PictureDialog,
+    componentProps: {
+      src: "https://spaces.madewithheart.tech/lunarblessing_dev/asset/aries.png",
+      text: "You might want to choose dimmed lid if you don't want bright light from the top(lid)",
+    },
+  });
+};
 const addToCart = () => {
   dialog({
     title: "Adding to cart",
