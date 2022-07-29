@@ -178,7 +178,7 @@ const contact = (name) => {
       window.open("https://m.me/lunarblessingsmm");
       break;
     case "phone":
-      window.open("tel:+95943161890");
+      window.open("tel:+959452538242");
       break;
     default:
       break;
