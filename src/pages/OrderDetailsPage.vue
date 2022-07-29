@@ -54,6 +54,10 @@
           </q-card-section>
         </q-card>
       </q-expansion-item>
+      <div class="q-pa-sm rounded-borders bg-info text-white q-mb-sm">
+        We will try to process the order as soon as possible. It usually takes
+        up to 2 days to delivery the order.
+      </div>
       <q-markup-table :separator="'cell'" flat bordered wrap-cells dense dark>
         <thead>
           <tr>

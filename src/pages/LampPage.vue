@@ -95,9 +95,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { fasLightbulb, fasInfo } from "@quasar/extras/fontawesome-v6";
-import useBackend from "src/composables/backend";
 import { useCartStore } from "src/stores/cart";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
@@ -120,7 +119,7 @@ const explainEngrave = () => {
     component: PictureDialog,
     componentProps: {
       src: "https://spaces.madewithheart.tech/lunarblessing_dev/asset/aries.png",
-      text: "We engrave the text you provided to the lamp.",
+      text: "We engrave the text you provided to the lamp. It's optional.",
     },
   });
 };

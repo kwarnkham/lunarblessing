@@ -4,9 +4,14 @@
       <q-card-section>
         <div class="text-center">
           <div>You are paying via {{ payment.name }}</div>
-          <q-btn @click="copyLinkToClipboard(payment.number)">
-            {{ payment.number }}
-          </q-btn>
+          <strong> {{ payment.number }}</strong>
+          <q-btn
+            @click="copyLinkToClipboard(payment.number)"
+            :icon="fasCopy"
+            flat
+            round
+            color="info"
+          />
         </div>
         <q-separator />
         <div v-if="payment.account_name">
@@ -15,9 +20,14 @@
         <q-separator />
         <div class="text-center">
           <div>The Amount you need to pay is</div>
-          <q-btn @click="copyLinkToClipboard(amount)">
-            {{ formatCurrency(amount) }} MMK
-          </q-btn>
+          <strong>{{ formatCurrency(amount) }} MMK</strong>
+          <q-btn
+            @click="copyLinkToClipboard(amount)"
+            :icon="fasCopy"
+            flat
+            round
+            color="info"
+          />
         </div>
         <q-separator />
         <div class="text-center">
@@ -78,7 +88,12 @@ import { useDialogPluginComponent, useQuasar } from "quasar";
 import useUtility from "src/composables/utility";
 import { computed, ref } from "vue";
 import PicturesSelector from "./PicturesSelector.vue";
-import { fasEye, fasTrash, fasXmark } from "@quasar/extras/fontawesome-v6";
+import {
+  fasEye,
+  fasTrash,
+  fasXmark,
+  fasCopy,
+} from "@quasar/extras/fontawesome-v6";
 import useBackend from "src/composables/backend";
 
 const { copyLinkToClipboard, formatCurrency } = useUtility();
