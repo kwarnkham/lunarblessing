@@ -1,9 +1,9 @@
 <template>
-  <q-page padding v-if="itemPage">
+  <q-page padding v-if="itemStore.getItems.length">
     <div class="row justify-around q-gutter-y-xs">
       <q-btn
         :label="item.name"
-        v-for="item in itemPage.data"
+        v-for="item in itemStore.getItems"
         :key="item.id"
         push
         @click="selectedItem = item"
@@ -103,8 +103,8 @@ import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 import useApp from "src/composables/app";
 import PictureDialog from "src/components/PictureDialog";
+import { useItemsStore } from "src/stores/items";
 
-const selectedItem = ref(null);
 const quote = ref("");
 const dimmedLid = ref(true);
 const switchedOn = ref(true);
@@ -113,6 +113,8 @@ const cartStore = useCartStore();
 const { dialog } = useQuasar();
 const router = useRouter();
 const { getItemImage } = useApp();
+const itemStore = useItemsStore();
+const selectedItem = ref(itemStore.getItems[0]);
 const explainEngrave = () => {
   dialog({
     component: PictureDialog,
@@ -160,28 +162,6 @@ const addToCart = () => {
     });
   });
 };
-const signs = [
-  "aquarius",
-  "pisces",
-  "aries",
-  "taurus",
-  "gemini",
-  "cancer",
-  "leo",
-  "virgo",
-  "libra",
-  "scorpio",
-  "sagittarius",
-  "capricorn",
-];
-const { fetchItems } = useBackend();
-const itemPage = ref(null);
-onMounted(() => {
-  fetchItems().then((data) => {
-    itemPage.value = data;
-    selectedItem.value = itemPage.value.data[0];
-  });
-});
 </script>
 
 <style lang="scss" scoped>

@@ -1,4 +1,4 @@
-import { LocalStorage } from "quasar";
+import { Loading, LocalStorage } from "quasar";
 import { boot } from "quasar/wrappers";
 import { useUserStore } from "src/stores/user";
 import { useCartStore } from "src/stores/cart";
@@ -9,6 +9,7 @@ import { useItemsStore } from "src/stores/items";
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
 export default boot(async ({ store, router }) => {
+  Loading.show();
   if (api.defaults.headers.common["Authorization"]) {
     const userStore = useUserStore(store);
     const user = await api({
@@ -49,4 +50,5 @@ export default boot(async ({ store, router }) => {
       LocalStorage.set("cartItems", result);
     });
   });
+  Loading.hide();
 });
