@@ -38,11 +38,13 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
 import useBackend from "src/composables/backend";
 import { useUserStore } from "src/stores/user";
 import { ref } from "vue";
 
+const { loading } = useQuasar();
 const userStore = useUserStore();
 const current = ref("");
 const password = ref("");
@@ -50,12 +52,22 @@ const passwordAgain = ref("");
 const { changePassword } = useBackend();
 const { successNotify } = useApp();
 const submit = () => {
+  loading.show();
   changePassword({
     current_password: current.value,
     password: password.value,
     password_confirmation: passwordAgain.value,
-  }).then((message) => {
-    if (message) successNotify(message);
-  });
+  })
+    .then((response) => {
+      if (response) {
+        successNotify("Success");
+        current.value = "";
+        password.value = "";
+        passwordAgain.value = "";
+      }
+    })
+    .finally(() => {
+      loading.hide();
+    });
 };
 </script>

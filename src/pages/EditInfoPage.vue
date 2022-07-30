@@ -13,27 +13,34 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
 import useBackend from "src/composables/backend";
 import { useUserStore } from "src/stores/user";
 import { ref } from "vue";
 
 const userStore = useUserStore();
+const { loading } = useQuasar();
 const name = ref(userStore.getUser.name);
 const mobile = ref(userStore.getUser.mobile);
 const address = ref(userStore.getUser.address);
 const { updateUser } = useBackend();
 const { successNotify } = useApp();
 const submit = () => {
+  loading.show();
   updateUser({
     name: name.value,
     mobile: mobile.value,
     address: address.value,
-  }).then((user) => {
-    if (user) {
-      userStore.setUser(user);
-      successNotify("Updated");
-    }
-  });
+  })
+    .then((user) => {
+      if (user) {
+        userStore.setUser(user);
+        successNotify("Updated");
+      }
+    })
+    .finally(() => {
+      loading.hide();
+    });
 };
 </script>

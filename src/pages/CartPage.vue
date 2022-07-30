@@ -53,6 +53,7 @@
         :label="'Checkout'"
         class="fit"
         push
+        no-caps
         color="positive"
         @click="
           $router.push({
