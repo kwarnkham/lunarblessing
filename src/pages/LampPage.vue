@@ -108,6 +108,7 @@ import useApp from "src/composables/app";
 import PictureDialog from "src/components/PictureDialog";
 import { useItemsStore } from "src/stores/items";
 import { useCssVar } from "@vueuse/core";
+import PictureCaroselDialog from "src/components/PictureCaroselDialog";
 
 const imgDiv = ref();
 
@@ -126,7 +127,7 @@ const explainEngrave = () => {
   dialog({
     component: PictureDialog,
     componentProps: {
-      src: "https://spaces.madewithheart.tech/lunarblessing_dev/asset/aries.png",
+      src: "https://spaces.madewithheart.tech/lunarblessing/asset/aries.png",
       text: "We engrave the text you provided to the lamp. It's optional.",
     },
   });
@@ -135,7 +136,7 @@ const explainDimmedLid = () => {
   dialog({
     component: PictureDialog,
     componentProps: {
-      src: "https://spaces.madewithheart.tech/lunarblessing_dev/asset/aries.png",
+      src: "https://spaces.madewithheart.tech/lunarblessing/asset/aries.png",
       text: "You might want to choose dimmed lid if you don't want bright light from the top(lid)",
     },
   });
@@ -170,7 +171,17 @@ const addToCart = () => {
     });
   });
 };
-const showAllPictures = () => {};
+const showAllPictures = () => {
+  dialog({
+    title: "Aries",
+    maximized: true,
+    component: PictureCaroselDialog,
+    componentProps: {
+      pictures: selectedItem.value.pictures,
+      title: selectedItem.value.name,
+    },
+  });
+};
 
 const onImage = useCssVar("--onimage", imgDiv, {
   initialValue: `url(${getItemImage(
