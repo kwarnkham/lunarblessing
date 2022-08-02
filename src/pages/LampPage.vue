@@ -1,5 +1,5 @@
 <template>
-  <q-page padding v-if="itemStore.getItems.length">
+  <q-page padding v-if="itemStore.getItems.length" class="page">
     <div class="row justify-around q-gutter-y-xs">
       <q-btn
         :label="item.name"
@@ -14,12 +14,10 @@
     </div>
 
     <div v-if="selectedItem" class="full-width q-gutter-y-sm q-my-sm">
-      <div class="bg-amber-1 rounded-borders">
-        <q-img
-          :src="getItemImage(selectedItem.pictures[0].url)"
-          class="fit"
-          fit="contain"
-        />
+      <div class="bg-black rounded-borders image relative-position">
+        <div
+          :class="[switchedOn ? 'animation-fade-on' : 'animation-fade-off']"
+        ></div>
       </div>
 
       <div class="row justify-around">
@@ -39,6 +37,7 @@
           @click="switchedOn = false"
           :disabled="switching"
         />
+        <q-btn :icon="fasImage" color="info" flat @click="showAllPictures" />
       </div>
     </div>
     <q-input
@@ -96,7 +95,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { fasLightbulb, fasInfo } from "@quasar/extras/fontawesome-v6";
+import { fasLightbulb, fasInfo, fasImage } from "@quasar/extras/fontawesome-v6";
 import { useCartStore } from "src/stores/cart";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
@@ -112,6 +111,7 @@ const cartStore = useCartStore();
 const { dialog } = useQuasar();
 const router = useRouter();
 const { getItemImage } = useApp();
+
 const itemStore = useItemsStore();
 const selectedItem = ref(itemStore.getItems[0]);
 const explainEngrave = () => {
@@ -132,6 +132,7 @@ const explainDimmedLid = () => {
     },
   });
 };
+
 const addToCart = () => {
   dialog({
     title: "Adding to cart",
@@ -161,11 +162,55 @@ const addToCart = () => {
     });
   });
 };
+const showAllPictures = () => {};
 </script>
 
 <style lang="scss" scoped>
 .dim-bright-radio {
   border: solid $info 1px;
   padding-top: 6px;
+}
+</style>
+
+<style scoped lang="scss">
+.page {
+  --onimage: url(https://spaces.madewithheart.tech/lunarblessing/items/aries-on.jpeg);
+  --offimage: url(https://spaces.madewithheart.tech/lunarblessing/items/aries-off.jpeg);
+}
+@keyframes fadeOn {
+  0% {
+    background-image: var(--offimage);
+  }
+  100% {
+    background-image: var(--onimage);
+  }
+}
+.animation-fade-on {
+  background-image: var(--onimage);
+  animation-name: fadeOn;
+}
+@keyframes fadeOff {
+  0% {
+    background-image: var(--onimage);
+  }
+  100% {
+    background-image: var(--offimage);
+  }
+}
+
+.animation-fade-off {
+  background-image: var(--offimage);
+  animation-name: fadeOff;
+}
+.image {
+  height: 473px;
+}
+.image > div {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top;
+  animation-duration: 2s;
 }
 </style>
