@@ -17,6 +17,11 @@
       <div class="bg-black rounded-borders image relative-position">
         <div
           :class="[switchedOn ? 'animation-fade-on' : 'animation-fade-off']"
+          ref="imgDiv"
+          :style="{
+            '--onimage': onImage,
+            '--offimage': offImage,
+          }"
         ></div>
       </div>
 
@@ -94,7 +99,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { fasLightbulb, fasInfo, fasImage } from "@quasar/extras/fontawesome-v6";
 import { useCartStore } from "src/stores/cart";
 import { useQuasar } from "quasar";
@@ -102,6 +107,9 @@ import { useRouter } from "vue-router";
 import useApp from "src/composables/app";
 import PictureDialog from "src/components/PictureDialog";
 import { useItemsStore } from "src/stores/items";
+import { useCssVar } from "@vueuse/core";
+
+const imgDiv = ref();
 
 const quote = ref("");
 const dimmedLid = ref(true);
@@ -163,19 +171,34 @@ const addToCart = () => {
   });
 };
 const showAllPictures = () => {};
+
+const onImage = useCssVar("--onimage", imgDiv, {
+  initialValue: `url(${getItemImage(
+    selectedItem.value.pictures.find((picture) => picture.type == 3).url
+  )})`,
+});
+
+const offImage = useCssVar("--offimage", imgDiv, {
+  initialValue: `url(${getItemImage(
+    selectedItem.value.pictures.find((picture) => picture.type == 2).url
+  )})`,
+});
+
+watch(selectedItem, () => {
+  onImage.value = `url(${getItemImage(
+    selectedItem.value.pictures.find((picture) => picture.type == 3).url
+  )})`;
+
+  offImage.value = `url(${getItemImage(
+    selectedItem.value.pictures.find((picture) => picture.type == 2).url
+  )})`;
+});
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .dim-bright-radio {
   border: solid $info 1px;
   padding-top: 6px;
-}
-</style>
-
-<style scoped lang="scss">
-.page {
-  --onimage: url(https://spaces.madewithheart.tech/lunarblessing/items/aries-on.jpeg);
-  --offimage: url(https://spaces.madewithheart.tech/lunarblessing/items/aries-off.jpeg);
 }
 @keyframes fadeOn {
   0% {
