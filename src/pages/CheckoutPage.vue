@@ -59,17 +59,19 @@ const submit = () => {
     items: cartStore.getItems,
   })
     .then((order) => {
-      cartStore.clearCart();
-      if (!user.value.addresss) userStore.setAddress(address.value);
-      if (!user.value.name) userStore.setName(name.value);
-      if (!user.value.mobile) userStore.setMobile(mobile.value);
+      if (order) {
+        cartStore.clearCart();
+        if (!user.value.addresss) userStore.setAddress(address.value);
+        if (!user.value.name) userStore.setName(name.value);
+        if (!user.value.mobile) userStore.setMobile(mobile.value);
 
-      router.push({
-        name: "orderDetails",
-        params: {
-          id: order.id,
-        },
-      });
+        router.push({
+          name: "orderDetails",
+          params: {
+            id: order.id,
+          },
+        });
+      }
     })
     .finally(() => {
       loading.hide();
