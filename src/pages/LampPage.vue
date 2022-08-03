@@ -27,20 +27,17 @@
 
       <div class="row justify-around">
         <q-btn
-          :icon="fasLightbulb"
-          color="primary"
-          :flat="!switchedOn"
-          :outline="switchedOn"
-          @click="switchedOn = true"
-          :disabled="switching"
+          no-caps
+          :icon="isBody ? fasCircle : farCircle"
+          @click="isBody = !isBody"
+          color="info"
+          push
         />
         <q-btn
-          :icon="fasLightbulb"
-          color="grey"
-          :flat="switchedOn"
-          :outline="!switchedOn"
-          @click="switchedOn = false"
-          :disabled="switching"
+          :icon="switchedOn ? fasToggleOn : fasToggleOff"
+          glossy
+          :color="switchedOn ? 'primary' : 'black'"
+          @click="switchedOn = !switchedOn"
         />
         <q-btn :icon="fasImage" color="info" flat @click="showAllPictures" />
       </div>
@@ -100,7 +97,14 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { fasLightbulb, fasInfo, fasImage } from "@quasar/extras/fontawesome-v6";
+import {
+  fasInfo,
+  fasImage,
+  fasToggleOff,
+  fasToggleOn,
+  fasCircle,
+  farCircle,
+} from "@quasar/extras/fontawesome-v6";
 import { useCartStore } from "src/stores/cart";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
@@ -111,11 +115,10 @@ import { useCssVar } from "@vueuse/core";
 import PictureCaroselDialog from "src/components/PictureCaroselDialog";
 
 const imgDiv = ref();
-
+const isBody = ref(true);
 const quote = ref("");
 const dimmedLid = ref(true);
 const switchedOn = ref(true);
-const switching = ref(false);
 const cartStore = useCartStore();
 const { dialog } = useQuasar();
 const router = useRouter();
@@ -185,25 +188,35 @@ const showAllPictures = () => {
 
 const onImage = useCssVar("--onimage", imgDiv, {
   initialValue: `url(${getItemImage(
-    selectedItem.value.pictures.find((picture) => picture.type == 3).url
+    selectedItem.value.pictures.find(
+      (picture) => picture.type == (isBody.value ? 3 : 5)
+    ).url
   )})`,
 });
 
 const offImage = useCssVar("--offimage", imgDiv, {
   initialValue: `url(${getItemImage(
-    selectedItem.value.pictures.find((picture) => picture.type == 2).url
+    selectedItem.value.pictures.find(
+      (picture) => picture.type == (isBody.value ? 2 : 4)
+    ).url
   )})`,
 });
-
-watch(selectedItem, () => {
+const setImageUrl = () => {
   onImage.value = `url(${getItemImage(
-    selectedItem.value.pictures.find((picture) => picture.type == 3).url
+    selectedItem.value.pictures.find(
+      (picture) => picture.type == (isBody.value ? 3 : 5)
+    ).url
   )})`;
 
   offImage.value = `url(${getItemImage(
-    selectedItem.value.pictures.find((picture) => picture.type == 2).url
+    selectedItem.value.pictures.find(
+      (picture) => picture.type == (isBody.value ? 2 : 4)
+    ).url
   )})`;
-});
+};
+
+watch(selectedItem, setImageUrl);
+watch(isBody, setImageUrl);
 </script>
 
 <style scoped lang="scss">
@@ -237,14 +250,14 @@ watch(selectedItem, () => {
   animation-name: fadeOff;
 }
 .image {
-  height: 473px;
+  height: 480px;
 }
 .image > div {
   width: 100%;
   height: 100%;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: top;
+  background-position: center;
   animation-duration: 2s;
 }
 </style>
