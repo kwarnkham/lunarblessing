@@ -15,10 +15,7 @@
         "{{ parseOrderStatus(order.status) }}"
       </span>
       <div class="text-overline">({{ parseDate(order.updated_at) }})</div>
-      <div
-        class="row justify-around"
-        v-if="order.status == 1 && !isAdmin(userStore.getUser)"
-      >
+      <div class="row justify-around" v-if="order.status == 1">
         <q-btn
           label="Cancel Order"
           no-caps
@@ -38,7 +35,7 @@
           v-else
         />
       </div>
-      <div class="text-center" v-if="isAdmin(userStore.getUser)">
+      <div class="text-center q-mt-sm" v-if="isAdmin(userStore.getUser)">
         <q-btn label="Update Order" no-caps @click="update" />
       </div>
       <q-expansion-item
@@ -185,6 +182,8 @@ const cancel = () => {
 const update = () => {
   dialog({
     title: "Update order status",
+    message:
+      '[{"2":"Confirmed"},{"3":"Dispatched"},{"4":"Completed"},{"5":"Canceled"}]',
     prompt: {
       model: order.value.status,
       type: "tel",
