@@ -15,20 +15,22 @@ export default function useResponsePagination(fetcher) {
   const route = useRoute();
 
   const fetchAppend = (params) => {
-    loading.show();
-    fetcher({ ...params, page: page.value.current_page + 1 })
-      .then((response) => {
-        if (response) {
-          const temp = JSON.parse(JSON.stringify(page.value));
-          const oldData = JSON.parse(JSON.stringify(temp.data));
-          const newData = [...oldData, ...response.data.data];
-          response.data.data = newData;
-          page.value = response.data;
-        }
-      })
-      .finally(() => {
-        loading.hide();
-      });
+    if (page.value.next_page_url) {
+      loading.show();
+      fetcher({ ...params, page: page.value.current_page + 1 })
+        .then((response) => {
+          if (response) {
+            const temp = JSON.parse(JSON.stringify(page.value));
+            const oldData = JSON.parse(JSON.stringify(temp.data));
+            const newData = [...oldData, ...response.data];
+            response.data = newData;
+            page.value = response;
+          }
+        })
+        .finally(() => {
+          loading.hide();
+        });
+    }
   };
 
   const fetchPage = (params) => {

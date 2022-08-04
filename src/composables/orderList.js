@@ -2,25 +2,20 @@ import { computed, ref, watch } from "vue";
 import useResponsePagination from "src/composables/responsePagination";
 import useBackend from "./backend";
 
-export default function useOrderList(options = {}) {
-  const status = ref("1");
-  const params = computed(() => ({ ...options, status: status.value }));
+export default function useOrderList(params) {
   const { fetchOrders } = useBackend();
 
-  const { page, currentPage, fetchPage, max } =
+  const { page, currentPage, fetchPage, fetchAppend } =
     useResponsePagination(fetchOrders);
 
   //where it starts
   watch(currentPage, () => {
-    fetchPage(params.value);
+    fetchPage(params);
   });
 
   return {
     fetchOrders,
+    fetchAppend,
     page,
-    status,
-    params,
-    currentPage,
-    max,
   };
 }

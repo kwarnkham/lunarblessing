@@ -20,7 +20,11 @@
         <q-btn :icon="fasMagnifyingGlass" type="submit" flat dense />
       </div>
     </q-form>
-    <q-list v-if="page" class="col scroll-y">
+    <q-list
+      v-if="page"
+      class="col scroll-y"
+      v-scroll="debounce(fetchMore, 300)"
+    >
       <template v-for="order in page.data" :key="order">
         <q-item
           clickable
@@ -72,10 +76,10 @@
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
+import { useQuasar, debounce } from "quasar";
 import useApp from "src/composables/app";
 import useUtility from "src/composables/utility";
-import { onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { fasMagnifyingGlass } from "@quasar/extras/fontawesome-v6";
 import useOrderList from "src/composables/orderList.js";
 const { parseDate, formatCurrency, pageOptions } = useUtility();
@@ -110,16 +114,22 @@ const statuses = [
 const status = ref(statuses[0]);
 const code = ref("");
 const { parseOrderStatus } = useApp();
-
+const params = computed(() => ({
+  order_in: "asc",
+  per_page: "20",
+  status: status.value.value,
+  mobile: mobile.value,
+  code: code.value,
+}));
+const fetchMore = (verticalScrollPosition) => {
+  const el = document.querySelector(".scroll-y");
+  if (el.scrollHeight - 100 <= verticalScrollPosition + el.clientHeight) {
+    fetchAppend(params.value);
+  }
+};
 const filter = () => {
   loading.show();
-  fetchOrders({
-    order_in: "asc",
-    per_page: "20",
-    status: status.value.value,
-    mobile: mobile.value,
-    code: code.value,
-  })
+  fetchOrders(params.value)
     .then((response) => {
       if (response) page.value = response;
     })
@@ -127,13 +137,7 @@ const filter = () => {
       loading.hide();
     });
 };
-const { page, fetchOrders } = useOrderList({
-  order_in: "asc",
-  per_page: "20",
-  status: status.value.value,
-  mobile: mobile.value,
-  code: code.value,
-});
+const { page, fetchOrders, fetchAppend } = useOrderList(params.value);
 watch(page, () => {
   if (page.value?.data.length <= 0) {
     dialog({
