@@ -61,7 +61,9 @@ const showImage = ref(true);
 const imageIndex = ref(0);
 const itemsStore = useItemsStore();
 const images = computed(() =>
-  itemsStore.getItems.map((item) => item.pictures[0])
+  itemsStore.getItems
+    .map((item) => item.pictures[0])
+    .filter((e) => e != undefined)
 );
 const currentImage = computed(() =>
   getItemImage(images.value[imageIndex.value].url)
