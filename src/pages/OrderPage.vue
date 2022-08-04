@@ -5,8 +5,8 @@
       ref="orderFilterForm"
       class="row justify-between"
     >
-      <q-input dense outlined label="id" v-model="id" class="col-5" />
-      <q-input dense outlined label="mobile" v-model="mobile" class="col-5" />
+      <q-input dense outlined label="Code" v-model="code" class="col-5" />
+      <q-input dense outlined label="Mobile" v-model="mobile" class="col-5" />
       <q-select
         outlined
         v-model="status"
@@ -20,8 +20,8 @@
         <q-btn :icon="fasMagnifyingGlass" type="submit" flat dense />
       </div>
     </q-form>
-    <q-list v-if="orderPage" class="col scroll-y">
-      <template v-for="order in orderPage.data" :key="order">
+    <q-list v-if="page" class="col scroll-y">
+      <template v-for="order in page.data" :key="order">
         <q-item
           clickable
           @click="
@@ -74,16 +74,12 @@
 <script setup>
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
-import useBackend from "src/composables/backend";
 import useUtility from "src/composables/utility";
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { onMounted, ref, watch } from "vue";
 import { fasMagnifyingGlass } from "@quasar/extras/fontawesome-v6";
-const orderPage = ref(null);
+import useOrderList from "src/composables/orderList.js";
 const { parseDate, formatCurrency, pageOptions } = useUtility();
-const { fetchOrders } = useBackend();
 const { dialog, loading } = useQuasar();
-const router = useRouter();
 const mobile = ref("");
 const statuses = [
   {
@@ -112,27 +108,37 @@ const statuses = [
   },
 ];
 const status = ref(statuses[0]);
-const id = ref("");
+const code = ref("");
 const { parseOrderStatus } = useApp();
 
-const filter = () => {};
-onMounted(() => {
+const filter = () => {
   loading.show();
-  fetchOrders()
-    .then((data) => {
-      if (data) {
-        orderPage.value = data;
-      }
-      if (orderPage.value.data.length <= 0) {
-        dialog({
-          title: "You don't have any order yet.",
-        }).onDismiss(() => {
-          router.replace({ name: "lamp" });
-        });
-      }
+  fetchOrders({
+    order_in: "asc",
+    per_page: "20",
+    status: status.value.value,
+    mobile: mobile.value,
+    code: code.value,
+  })
+    .then((response) => {
+      if (response) page.value = response;
     })
     .finally(() => {
       loading.hide();
     });
+};
+const { page, fetchOrders } = useOrderList({
+  order_in: "asc",
+  per_page: "20",
+  status: status.value.value,
+  mobile: mobile.value,
+  code: code.value,
+});
+watch(page, () => {
+  if (page.value?.data.length <= 0) {
+    dialog({
+      title: "No order found",
+    });
+  }
 });
 </script>

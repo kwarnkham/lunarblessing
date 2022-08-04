@@ -71,6 +71,9 @@ export default function useBackend() {
       }
     },
     fetchOrders: async (params) => {
+      if (params.mobile == "") params.mobile = undefined;
+      if (params.code == "") params.code = undefined;
+      if (params.status == 0 || params.status == "0") params.status = undefined;
       try {
         return await api({
           method: "GET",
