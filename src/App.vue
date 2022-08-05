@@ -7,25 +7,32 @@ import jwt_decode from "jwt-decode";
 import { useQuasar } from "quasar";
 import useApp from "./composables/app.js";
 import useBackend from "./composables/backend.js";
+import { loadScript } from "vue-plugin-load-script";
 
 const { loginWithGoogle } = useBackend();
 const { loading } = useQuasar();
 const { preserveToken } = useApp();
-
-google.accounts.id.initialize({
-  client_id: process.env.GOOGLE_CLIENT_ID,
-  callback: (response) => {
-    const email = jwt_decode(response.credential).email;
-    loading.show();
-    loginWithGoogle({ email })
-      .then((data) => {
-        preserveToken(data);
-      })
-      .finally(() => {
-        loading.hide();
-      });
-  },
-});
+loading.show();
+loadScript("https://accounts.google.com/gsi/client")
+  .then(() => {
+    google.accounts.id.initialize({
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      callback: (response) => {
+        const email = jwt_decode(response.credential).email;
+        loading.show();
+        loginWithGoogle({ email })
+          .then((data) => {
+            preserveToken(data);
+          })
+          .finally(() => {
+            loading.hide();
+          });
+      },
+    });
+  })
+  .finally(() => {
+    loading.hide();
+  });
 
 window.fbAsyncInit = function () {
   FB.init({
