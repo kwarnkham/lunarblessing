@@ -5,9 +5,12 @@ import {
   fasCircleExclamation,
   fasInfo,
 } from "@quasar/extras/fontawesome-v6";
+import { api } from "src/boot/axios";
+import { useUserStore } from "src/stores/user";
 
 export default function useApp() {
-  const { notify, dialog } = useQuasar();
+  const { notify, dialog, localStorage } = useQuasar();
+  const userStore = useUserStore();
   const successNotify = (message) => {
     notify({
       message,
@@ -38,6 +41,11 @@ export default function useApp() {
       }).onOk(() => {
         successNotify("Login success");
       });
+    },
+    preserveToken: ({ user, token }) => {
+      localStorage.set("token", token);
+      api.defaults.headers.common["Authorization"] = "Bearer " + token;
+      userStore.setUser(user);
     },
     successNotify,
     errorNotify,

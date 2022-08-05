@@ -48,22 +48,21 @@
 
 <script setup>
 import { useDialogPluginComponent, useQuasar } from "quasar";
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import LoginDialog from "src/components/LoginDialog";
 import useBackend from "src/composables/backend";
-import { api } from "src/boot/axios";
-import { useUserStore } from "src/stores/user";
 import { fabFacebook } from "@quasar/extras/fontawesome-v6";
 import useFb from "src/composables/fb";
 import useApp from "src/composables/app";
 import GoogleLoginButton from "src/components/GoogleLoginButton";
+import { useUserStore } from "src/stores/user.js";
 
 const mobile = ref("");
 const name = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
-const { dialog, loading, localStorage } = useQuasar();
-const { successNotify } = useApp();
+const { dialog, loading } = useQuasar();
+const { successNotify, preserveToken } = useApp();
 const showLoginDialog = () => {
   onDialogHide();
   dialog({
@@ -74,7 +73,10 @@ const showLoginDialog = () => {
 };
 const { register } = useBackend();
 const userStore = useUserStore();
-
+const user = computed(() => userStore.getUser);
+watch(user, (newValue, oldValue) => {
+  if (oldValue == null && newValue.id != undefined) onDialogHide();
+});
 const { loginWithFb } = useFb();
 const fbLogin = () => {
   loading.show();
@@ -95,10 +97,8 @@ const submit = () => {
     password: password.value,
     password_confirmation: passwordConfirm.value,
   })
-    .then(({ token, user }) => {
-      localStorage.set("token", token);
-      api.defaults.headers.common["Authorization"] = "Bearer " + token;
-      userStore.setUser(user);
+    .then((data) => {
+      preserveToken(data);
       onDialogOK();
     })
     .finally(() => {

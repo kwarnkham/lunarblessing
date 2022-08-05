@@ -4,6 +4,28 @@
 
 <script setup>
 import jwt_decode from "jwt-decode";
+import { useQuasar } from "quasar";
+import useApp from "./composables/app.js";
+import useBackend from "./composables/backend.js";
+
+const { loginWithGoogle } = useBackend();
+const { loading } = useQuasar();
+const { preserveToken } = useApp();
+
+google.accounts.id.initialize({
+  client_id: process.env.GOOGLE_CLIENT_ID,
+  callback: (response) => {
+    const email = jwt_decode(response.credential).email;
+    loading.show();
+    loginWithGoogle({ email })
+      .then((data) => {
+        preserveToken(data);
+      })
+      .finally(() => {
+        loading.hide();
+      });
+  },
+});
 
 window.fbAsyncInit = function () {
   FB.init({
@@ -27,11 +49,4 @@ window.fbAsyncInit = function () {
   js.src = "https://connect.facebook.net/en_US/sdk.js";
   fjs.parentNode.insertBefore(js, fjs);
 })(document, "script", "facebook-jssdk");
-
-google.accounts.id.initialize({
-  client_id: process.env.GOOGLE_CLIENT_ID,
-  callback: (response) => {
-    console.log(jwt_decode(response.credential).email);
-  },
-});
 </script>

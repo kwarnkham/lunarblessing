@@ -95,6 +95,17 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+    loginWithGoogle: async (data) => {
+      try {
+        return await api({
+          method: "POST",
+          url: "/login/google",
+          data,
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
     updateUser: async (data) => {
       try {
         return await api({

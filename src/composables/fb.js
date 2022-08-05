@@ -1,12 +1,9 @@
-import { useQuasar } from "quasar";
-import { api } from "src/boot/axios";
-import { useUserStore } from "src/stores/user";
+import useApp from "./app";
 import useBackend from "./backend";
 
 export default function useFb() {
   const { loginWithFacebook } = useBackend();
-  const { localStorage } = useQuasar();
-  const userStore = useUserStore();
+  const { preserveToken } = useApp();
   return {
     loginWithFb: async () => {
       return new Promise((resolve, reject) => {
@@ -15,10 +12,8 @@ export default function useFb() {
           if (response.status == "connected") {
             loginWithFacebook({
               fb_login_id: response.authResponse.userID,
-            }).then(({ user, token }) => {
-              localStorage.set("token", token);
-              api.defaults.headers.common["Authorization"] = "Bearer " + token;
-              userStore.setUser(user);
+            }).then((data) => {
+              preserveToken(data);
               resolve(true);
             });
           } else {
@@ -29,11 +24,7 @@ export default function useFb() {
                   fb_login_id: response.authResponse.userID,
                 }).then((data) => {
                   if (data) {
-                    const { user, token } = data;
-                    localStorage.set("token", token);
-                    api.defaults.headers.common["Authorization"] =
-                      "Bearer " + token;
-                    userStore.setUser(user);
+                    preserveToken(data);
                     resolve(true);
                   } else {
                     reject();
