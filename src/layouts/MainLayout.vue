@@ -4,7 +4,7 @@
       <q-toolbar class="row justify-between">
         <div v-if="$route.name == 'index'" class="row items-center">
           <q-avatar class="q-mr-sm">
-            <img :src="logoUrl" />
+            <img src="/icons/favicon-128x128.png" />
           </q-avatar>
           <div>Trying our best</div>
         </div>
@@ -253,5 +253,4 @@ const drawerItems = computed(() => [
     hidden: userStore.getUser,
   },
 ]);
-const logoUrl = process.env.ASSET_URL + "/asset/logo.png";
 </script>
