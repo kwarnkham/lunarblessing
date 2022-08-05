@@ -24,7 +24,7 @@
           </div>
         </q-form>
       </q-card-section>
-      <q-card-actions align="right">
+      <q-card-actions align="center" class="q-gutter-y-sm">
         <q-btn
           label="Friend ? Login here."
           @click="showLoginDialog"
@@ -40,6 +40,7 @@
           rounded
           class="fb-color"
         />
+        <GoogleLoginButton :id="$options.__name" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -52,9 +53,10 @@ import LoginDialog from "src/components/LoginDialog";
 import useBackend from "src/composables/backend";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { fasCheck, fabFacebook } from "@quasar/extras/fontawesome-v6";
+import { fabFacebook } from "@quasar/extras/fontawesome-v6";
 import useFb from "src/composables/fb";
 import useApp from "src/composables/app";
+import GoogleLoginButton from "src/components/GoogleLoginButton";
 
 const mobile = ref("");
 const name = ref("");

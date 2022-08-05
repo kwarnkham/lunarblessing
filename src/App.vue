@@ -3,6 +3,8 @@
 </template>
 
 <script setup>
+import jwt_decode from "jwt-decode";
+
 window.fbAsyncInit = function () {
   FB.init({
     appId: "745434533380761",
@@ -25,4 +27,11 @@ window.fbAsyncInit = function () {
   js.src = "https://connect.facebook.net/en_US/sdk.js";
   fjs.parentNode.insertBefore(js, fjs);
 })(document, "script", "facebook-jssdk");
+
+google.accounts.id.initialize({
+  client_id: process.env.GOOGLE_CLIENT_ID,
+  callback: (response) => {
+    console.log(jwt_decode(response.credential).email);
+  },
+});
 </script>

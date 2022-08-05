@@ -48,6 +48,11 @@ const routes = [
         component: () => import("pages/ChangePasswordPage.vue"),
         name: "changePassword",
       },
+      {
+        path: "privacy-policy",
+        component: () => import("pages/PrivacyPolicyPage.vue"),
+        name: "pirvacyPolicy",
+      },
     ],
   },
 
