@@ -41,6 +41,9 @@
           class="fb-color"
         />
         <GoogleLoginButton :id="$options.__name" />
+        <div class="text-center full-width">
+          <TelegramLoginButton />
+        </div>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -56,6 +59,7 @@ import useFb from "src/composables/fb";
 import useApp from "src/composables/app";
 import GoogleLoginButton from "src/components/GoogleLoginButton";
 import { useUserStore } from "src/stores/user.js";
+import TelegramLoginButton from "./TelegramLoginButton";
 
 const mobile = ref("");
 const name = ref("");

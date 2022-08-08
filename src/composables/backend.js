@@ -106,6 +106,17 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+    loginWithTelegram: async (data) => {
+      try {
+        return await api({
+          method: "POST",
+          url: "/login/telegram",
+          data,
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
     updateUser: async (data) => {
       try {
         return await api({
