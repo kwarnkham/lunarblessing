@@ -63,13 +63,9 @@ watch(user, (newValue, oldValue) => {
 const { loginWithFb } = useFb();
 const fbLogin = () => {
   loading.show();
-  loginWithFb()
-    .then((_) => {
-      onDialogOK();
-    })
-    .finally(() => {
-      loading.hide();
-    });
+  loginWithFb().finally(() => {
+    loading.hide();
+  });
 };
 const { dialog, loading } = useQuasar();
 const { successNotify, preserveToken } = useApp();
