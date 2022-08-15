@@ -62,9 +62,12 @@
           </q-card-section>
         </q-card>
       </q-expansion-item>
-      <div class="q-pa-sm rounded-borders bg-info text-white q-mb-sm">
+      <div
+        class="q-pa-sm rounded-borders bg-info text-white q-mb-sm"
+        v-if="order.status != 4"
+      >
         We will try to process the order as soon as possible. It usually takes
-        up to 2 days to delivery the order.
+        up to 2 days to deliver the order.
       </div>
       <q-markup-table :separator="'cell'" flat bordered wrap-cells dense dark>
         <thead>
@@ -134,14 +137,7 @@ import useBackend from "src/composables/backend";
 import useUtility from "src/composables/utility";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import {
-  fasChevronDown,
-  fasCircleInfo,
-  fasTruckArrowRight,
-  farCircleCheck,
-  fasCircleCheck,
-  fasCircleXmark,
-} from "@quasar/extras/fontawesome-v6";
+import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
 import { useUserStore } from "src/stores/user";
@@ -151,7 +147,7 @@ import PictureDialog from "src/components/PictureDialog";
 const route = useRoute();
 const userStore = useUserStore();
 const { parseDate, formatCurrency, copyLinkToClipboard } = useUtility();
-const { isAdmin } = useApp();
+const { isAdmin, getStatusIcon } = useApp();
 const order = ref(null);
 const { dialog } = useQuasar();
 const { infoNotify, parseOrderStatus } = useApp();
@@ -177,23 +173,7 @@ const showPaidScreenshot = () => {
       },
     });
 };
-const getStatusIcon = (status) => {
-  status = Number(status);
-  switch (status) {
-    case 1:
-      return fasCircleInfo;
-    case 2:
-      return farCircleCheck;
-    case 3:
-      return fasTruckArrowRight;
-    case 4:
-      return fasCircleCheck;
-    case 5:
-      return fasCircleXmark;
-    default:
-      return fasCircleInfo;
-  }
-};
+
 const cancel = () => {
   dialog({
     title: "Cancel the order? :-(",

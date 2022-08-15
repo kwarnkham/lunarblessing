@@ -1,9 +1,14 @@
 import { useQuasar } from "quasar";
 import LoginDialog from "src/components/LoginDialog";
 import {
+  farCircleCheck,
   fasCheck,
+  fasCircleCheck,
   fasCircleExclamation,
+  fasCircleInfo,
+  fasCircleXmark,
   fasInfo,
+  fasTruckArrowRight,
 } from "@quasar/extras/fontawesome-v6";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
@@ -71,6 +76,23 @@ export default function useApp() {
     },
     isAdmin: (user) => {
       return user.roles?.map((e) => e.name).includes("admin");
+    },
+    getStatusIcon: (status) => {
+      status = Number(status);
+      switch (status) {
+        case 1:
+          return fasCircleInfo;
+        case 2:
+          return farCircleCheck;
+        case 3:
+          return fasTruckArrowRight;
+        case 4:
+          return fasCircleCheck;
+        case 5:
+          return fasCircleXmark;
+        default:
+          return fasCircleInfo;
+      }
     },
   };
 }

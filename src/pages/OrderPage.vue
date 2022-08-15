@@ -63,8 +63,27 @@
           </q-item-section>
 
           <q-item-section side>
-            <q-item-label :class="{ 'text-positive': order.status == 2 }">
+            <q-item-label
+              :class="{
+                'text-positive': order.status == 4,
+                'text-negative': order.status == 5,
+              }"
+              class="text-info"
+            >
               {{ parseOrderStatus(order.status) }}
+            </q-item-label>
+            <q-item-label>
+              <q-icon
+                :name="getStatusIcon(order.status)"
+                size="sm"
+                :color="
+                  order.status == 4
+                    ? 'positive'
+                    : order.status == 5
+                    ? 'negative'
+                    : 'info'
+                "
+              />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -85,6 +104,7 @@ import useOrderList from "src/composables/orderList.js";
 import { useUserStore } from "src/stores/user";
 const { parseDate, formatCurrency, pageOptions } = useUtility();
 const { dialog, loading } = useQuasar();
+
 const userStore = useUserStore();
 const mobile = ref("");
 const statuses = [
@@ -115,7 +135,7 @@ const statuses = [
 ];
 const status = ref(statuses[0]);
 const code = ref("");
-const { parseOrderStatus } = useApp();
+const { parseOrderStatus, getStatusIcon } = useApp();
 const { isAdmin } = useApp();
 const params = computed(() => ({
   order_in: isAdmin(userStore.getUser) ? "asc" : "desc",
