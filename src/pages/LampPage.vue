@@ -96,23 +96,23 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
 import {
-  fasInfo,
+  farCircle,
+  fasCircle,
   fasImage,
+  fasInfo,
   fasToggleOff,
   fasToggleOn,
-  fasCircle,
-  farCircle,
 } from "@quasar/extras/fontawesome-v6";
-import { useCartStore } from "src/stores/cart";
-import { useQuasar } from "quasar";
-import { useRouter } from "vue-router";
-import useApp from "src/composables/app";
-import PictureDialog from "src/components/PictureDialog";
-import { useItemsStore } from "src/stores/items";
 import { useCssVar } from "@vueuse/core";
+import { useQuasar } from "quasar";
 import PictureCaroselDialog from "src/components/PictureCaroselDialog";
+import PictureDialog from "src/components/PictureDialog";
+import useApp from "src/composables/app";
+import { useCartStore } from "src/stores/cart";
+import { useItemsStore } from "src/stores/items";
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 
 const imgDiv = ref();
 const isBody = ref(true);
