@@ -13,6 +13,17 @@
       The status of the order is
       <span class="text-weight-bold">
         "{{ parseOrderStatus(order.status) }}"
+        <q-icon
+          :name="getStatusIcon(order.status)"
+          :color="
+            order.status == 4
+              ? 'positive'
+              : order.status == 5
+              ? 'negative'
+              : 'info'
+          "
+          size="sm"
+        />
       </span>
       <div class="text-overline">({{ parseDate(order.updated_at) }})</div>
       <div class="row justify-around" v-if="order.status == 1">
@@ -123,7 +134,14 @@ import useBackend from "src/composables/backend";
 import useUtility from "src/composables/utility";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
+import {
+  fasChevronDown,
+  fasCircleInfo,
+  fasTruckArrowRight,
+  farCircleCheck,
+  fasCircleCheck,
+  fasCircleXmark,
+} from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
 import { useUserStore } from "src/stores/user";
@@ -132,8 +150,8 @@ import PictureDialog from "src/components/PictureDialog";
 
 const route = useRoute();
 const userStore = useUserStore();
-const { parseDate, isAdmin, formatCurrency, copyLinkToClipboard } =
-  useUtility();
+const { parseDate, formatCurrency, copyLinkToClipboard } = useUtility();
+const { isAdmin } = useApp();
 const order = ref(null);
 const { dialog } = useQuasar();
 const { infoNotify, parseOrderStatus } = useApp();
@@ -158,6 +176,23 @@ const showPaidScreenshot = () => {
         src: `${process.env.ASSET_URL}/order_paid/${order.value.screenshot}`,
       },
     });
+};
+const getStatusIcon = (status) => {
+  status = Number(status);
+  switch (status) {
+    case 1:
+      return fasCircleInfo;
+    case 2:
+      return farCircleCheck;
+    case 3:
+      return fasTruckArrowRight;
+    case 4:
+      return fasCircleCheck;
+    case 5:
+      return fasCircleXmark;
+    default:
+      return fasCircleInfo;
+  }
 };
 const cancel = () => {
   dialog({

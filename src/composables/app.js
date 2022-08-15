@@ -69,5 +69,8 @@ export default function useApp() {
           return status;
       }
     },
+    isAdmin: (user) => {
+      return user.roles?.map((e) => e.name).includes("admin");
+    },
   };
 }

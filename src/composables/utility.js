@@ -78,10 +78,6 @@ export default function useUtility() {
     }).format(number);
   };
 
-  const isAdmin = (user) => {
-    return user.roles?.map((e) => e.name).includes("admin");
-  };
-
   const getQR = (url) => {
     return (
       "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=" + url
@@ -140,7 +136,6 @@ export default function useUtility() {
     pageOptions,
     twoDigitsStringValue,
     formatCurrency,
-    isAdmin,
     getQR,
     downloadImage,
     copyLinkToClipboard,

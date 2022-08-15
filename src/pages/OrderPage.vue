@@ -82,8 +82,10 @@ import useUtility from "src/composables/utility";
 import { computed, ref, watch } from "vue";
 import { fasMagnifyingGlass } from "@quasar/extras/fontawesome-v6";
 import useOrderList from "src/composables/orderList.js";
+import { useUserStore } from "src/stores/user";
 const { parseDate, formatCurrency, pageOptions } = useUtility();
 const { dialog, loading } = useQuasar();
+const userStore = useUserStore();
 const mobile = ref("");
 const statuses = [
   {
@@ -114,8 +116,9 @@ const statuses = [
 const status = ref(statuses[0]);
 const code = ref("");
 const { parseOrderStatus } = useApp();
+const { isAdmin } = useApp();
 const params = computed(() => ({
-  order_in: "asc",
+  order_in: isAdmin(userStore.getUser) ? "asc" : "desc",
   per_page: "20",
   status: status.value.value,
   mobile: mobile.value,
