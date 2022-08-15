@@ -5,8 +5,8 @@
       ref="orderFilterForm"
       class="row justify-between"
     >
-      <q-input dense outlined label="Code" v-model="code" class="col-5" />
-      <q-input dense outlined label="Mobile" v-model="mobile" class="col-5" />
+      <q-input dense outlined label="Code" v-model="code" class="col-6" />
+      <q-input dense outlined label="Mobile" v-model="mobile" class="col-6" />
       <q-select
         outlined
         v-model="status"
