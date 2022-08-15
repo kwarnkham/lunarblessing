@@ -4,7 +4,8 @@
       <q-card-section>
         <q-form @submit.prevent="submit">
           <q-input :label="'Name'" v-model="name" required> </q-input>
-          <q-input :label="'Mobile'" v-model="mobile" required> </q-input>
+          <q-input :label="'Mobile'" v-model="mobile" required type="tel">
+          </q-input>
           <q-input
             :label="'Password'"
             v-model="password"

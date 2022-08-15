@@ -46,7 +46,7 @@
           v-else
         />
       </div>
-      <div class="q-mt-sm row justify-evenly" v-if="isAdmin(userStore.getUser)">
+      <div class="q-my-sm row justify-evenly" v-if="isAdmin(userStore.getUser)">
         <q-btn label="Update Order" no-caps @click="update" />
       </div>
       <q-expansion-item

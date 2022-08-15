@@ -3,7 +3,7 @@
     <q-form
       @submit.prevent="submit"
       class="full-width"
-      v-if="!userStore.getUser.fb_login_id"
+      v-if="canChangePassword"
     >
       <div class="text-h6 text-center">Change Password</div>
       <q-input
@@ -51,6 +51,10 @@ const password = ref("");
 const passwordAgain = ref("");
 const { changePassword } = useBackend();
 const { successNotify } = useApp();
+const canChangePassword =
+  !userStore.getUser.fb_login_id &&
+  !userStore.getUser.email &&
+  !userStore.getUser.telegram_id;
 const submit = () => {
   loading.show();
   changePassword({
