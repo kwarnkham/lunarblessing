@@ -103,7 +103,7 @@ import { fasMagnifyingGlass } from "@quasar/extras/fontawesome-v6";
 import useOrderList from "src/composables/orderList.js";
 import { useUserStore } from "src/stores/user";
 const { parseDate, formatCurrency, pageOptions } = useUtility();
-const { dialog, loading } = useQuasar();
+const { dialog, loading, localStorage } = useQuasar();
 
 const userStore = useUserStore();
 const mobile = ref("");
@@ -133,7 +133,7 @@ const statuses = [
     value: 5,
   },
 ];
-const status = ref(statuses[0]);
+const status = ref(localStorage.getItem("orderStatusFilter") ?? statuses[0]);
 const code = ref("");
 const { parseOrderStatus, getStatusIcon } = useApp();
 const { isAdmin } = useApp();
@@ -167,5 +167,8 @@ watch(page, () => {
       title: "No order found",
     });
   }
+});
+watch(status, () => {
+  localStorage.set("orderStatusFilter", status.value);
 });
 </script>

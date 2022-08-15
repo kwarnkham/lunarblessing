@@ -1,5 +1,4 @@
 edit dimmed bright, quote
-prefix mobile with 09
 notify with telegram when there is new order
 make client op in to telegram notify channel
 update order status with options
