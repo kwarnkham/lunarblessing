@@ -37,16 +37,15 @@
 import SelectedImage from "src/components/SelectedImage";
 import { useDialogPluginComponent } from "quasar";
 import { fasXmark } from "@quasar/extras/fontawesome-v6";
-const props = defineProps({
+defineProps({
   pictures: {
     type: Array,
     required: true,
   },
 });
-const emits = defineEmits([...useDialogPluginComponent.emits]);
-const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
-  useDialogPluginComponent();
-const onOKClick = onDialogOK;
+defineEmits([...useDialogPluginComponent.emits]);
+const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
+
 const onCancelClick = onDialogCancel;
 </script>
 

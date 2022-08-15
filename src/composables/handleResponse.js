@@ -1,4 +1,3 @@
-import { fasCircleExclamation } from "@quasar/extras/fontawesome-v6";
 import useApp from "./app";
 export default function useHandleResponse() {
   const { errorNotify } = useApp();

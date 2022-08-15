@@ -77,7 +77,7 @@
         </q-form>
       </q-card-section>
       <q-card-actions align="right">
-        <q-btn :icon="fasXmark" no-caps flat @click="onDialogHide" />
+        <q-btn :icon="fasXmark" no-caps flat @click="onDialogCancel" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -146,11 +146,11 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
 // onDialogCancel - Function to call to settle dialog with "cancel" outcome
 
 // this is part of our example (so not required)
-function onOKClick() {
-  // on OK, it is REQUIRED to
-  // call onDialogOK (with optional payload)
-  onDialogOK();
-  // or with payload: onDialogOK({ ... })
-  // ...and it will also hide the dialog automatically
-}
+// function onOKClick() {
+//   // on OK, it is REQUIRED to
+//   // call onDialogOK (with optional payload)
+//   onDialogOK();
+//   // or with payload: onDialogOK({ ... })
+//   // ...and it will also hide the dialog automatically
+// }
 </script>

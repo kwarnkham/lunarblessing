@@ -93,9 +93,9 @@ const submit = () => {
       loading.hide();
     });
 };
-const props = defineProps({
-  // ...your custom props
-});
+// const props = defineProps({
+//   // ...your custom props
+// });
 
 defineEmits([
   // REQUIRED; need to specify some events that your
@@ -113,11 +113,11 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
 // onDialogCancel - Function to call to settle dialog with "cancel" outcome
 
 // this is part of our example (so not required)
-function onOKClick() {
-  // on OK, it is REQUIRED to
-  // call onDialogOK (with optional payload)
-  onDialogOK();
-  // or with payload: onDialogOK({ ... })
-  // ...and it will also hide the dialog automatically
-}
+// function onOKClick() {
+//   // on OK, it is REQUIRED to
+//   // call onDialogOK (with optional payload)
+//   onDialogOK();
+//   // or with payload: onDialogOK({ ... })
+//   // ...and it will also hide the dialog automatically
+// }
 </script>
