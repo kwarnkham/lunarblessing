@@ -126,7 +126,7 @@ module.exports = configure(function (ctx) {
 
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
-    animations: ["rotateInDownLeft", "hinge", "zoomIn", "zoomOut"],
+    animations: ["rotateInDownLeft", "backOutDown", "zoomIn", "zoomOut"],
 
     // https://v2.quasar.dev/quasar-cli-webpack/developing-ssr/configuring-ssr
     ssr: {

@@ -1,5 +1,8 @@
 <template>
   <q-page padding v-if="itemStore.getItems.length" class="page">
+    <div class="full-width text-center">
+      <q-btn label="What's my zodiac sign?" no-caps flat @click="showSigns" />
+    </div>
     <div class="row justify-around q-gutter-y-xs">
       <q-btn
         :label="item.name"
@@ -126,6 +129,27 @@ const { getItemImage } = useApp();
 
 const itemStore = useItemsStore();
 const selectedItem = ref(itemStore.getItems[0]);
+const showSigns = () => {
+  dialog({
+    title: "Zodiac Signs Dates",
+    html: true,
+    message: `
+    <ul style="list-style: circle; font-size: 3.9vw; padding-left:10px">
+      <li>Aries : March 21 - April 19</li>
+      <li>Taurus : April 20 - May 20</li>
+      <li>Gemini: May 21 - June 21</li>
+      <li>Cancer: June 22 - July 22</li>
+      <li>Leo: July 23 - August 22</li>
+      <li>Virgo: August 23 - September 22</li>
+      <li>Libra: September 23 - October 22</li>
+      <li>Scorpio: October 23 - November 22</li>
+      <li>Sagittarius: November 23 - December 21</li>
+      <li>Capricorn: December 22 - January 19</li>
+      <li>Aqurius: January 20 - February 18</li>
+      <li>Pisces: February 19 - March 20</li>
+    </ul>`,
+  });
+};
 const explainEngrave = () => {
   dialog({
     component: PictureDialog,
