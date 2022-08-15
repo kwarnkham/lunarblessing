@@ -221,30 +221,45 @@ const cancel = () => {
 const update = () => {
   dialog({
     title: "Update order status",
-    message:
-      '[{"2":"Confirmed"},{"3":"Dispatched"},{"4":"Completed"},{"5":"Canceled"}]',
-    prompt: {
+    options: {
       model: order.value.status,
-      type: "tel",
-      isValid: (val) => [1, 2, 3, 4, 5].includes(Number(val)),
+      type: "radio",
+      items: [
+        { label: "Pending", value: 1, color: "secondary" },
+        { label: "Confirmed", value: 2 },
+        { label: "Dispatched", value: 3 },
+        { label: "Completed", value: 4 },
+        { label: "Canceled", value: 5 },
+      ],
     },
   }).onOk((status) => {
-    if (order.value.status != status)
-      updateOrderStatus(order.value, { status }).then((data) => {
-        if (data) {
-          order.value = data;
-          infoNotify("Order has been updated to " + parseOrderStatus(status));
-        }
-      });
+    if (order.value.status != status) {
+      loading.show();
+      updateOrderStatus(order.value, { status })
+        .then((data) => {
+          if (data) {
+            order.value = data;
+            infoNotify("Order has been updated to " + parseOrderStatus(status));
+          }
+        })
+        .finally(() => {
+          loading.hide();
+        });
+    }
   });
 };
 const { fetchAnOrder } = useBackend();
 const router = useRouter();
 onMounted(() => {
-  fetchAnOrder(route.params.id).then((data) => {
-    if (data) {
-      order.value = data;
-    } else router.replace({ name: "index" });
-  });
+  loading.show();
+  fetchAnOrder(route.params.id)
+    .then((data) => {
+      if (data) {
+        order.value = data;
+      } else router.replace({ name: "index" });
+    })
+    .finally(() => {
+      loading.hide();
+    });
 });
 </script>
