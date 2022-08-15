@@ -27,7 +27,7 @@
       <transition
         appear
         enter-active-class="animated rotateInDownLeft"
-        leave-active-class="animated hinge"
+        leave-active-class="animated backOutDown"
         @after-enter="hideImage"
         @after-leave="showNextImage"
       >
@@ -102,7 +102,10 @@ const facts = [
   --animate-duration: 1s;
 }
 .rotateInDownLeft {
-  --animate-duration: 1.5s;
+  --animate-duration: 1s;
+}
+.backOutDown {
+  --animate-duration: 1s;
 }
 .images {
   width: 100%;
