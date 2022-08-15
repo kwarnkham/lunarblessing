@@ -1,13 +1,23 @@
+Date helper
+
 pics
 
-taurus all
-gemini all
-cancer, cancel night
-leo set, leo, leo night,
+home page show case
+
+taurus all except set
+gemini all except set
+scorpio all except set
+
+scorpio, scorpio night,
+gemini, gemini night,
+taurus, taurus night,
+leo, leo night
 virgo, virgo night
 libra, libra night
-scorpio all
+cancer, cancel night
 sagittarius, sagittarius night
 capricorn, capricorn night
 aquarius, aquarius-night
 pisces, pisces-night
+
+QR and Text
