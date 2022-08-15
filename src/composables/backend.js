@@ -140,7 +140,7 @@ export default function useBackend() {
       }
     },
 
-    updateOrder: async (order, data) => {
+    updateOrderStatus: async (order, data) => {
       try {
         return await api({
           method: "POST",
@@ -173,6 +173,18 @@ export default function useBackend() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
+
+    updateOrderInfo: async (order) => {
+      try {
+        return await api({
+          method: "PUT",
+          url: "/order/" + order.id,
+          data: order,
         }).then(({ data }) => data);
       } catch (error) {
         handleResponse(error);

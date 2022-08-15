@@ -20,6 +20,14 @@
         required
         type="textarea"
       ></q-input>
+      <div class="q-pa-xs rounded-borders bg-amber-2 q-mt-sm">
+        <q-input
+          type="textarea"
+          v-model="note"
+          label="Do you have any note for the order?"
+          hint="It's ok to leave this blank"
+        />
+      </div>
       <div class="q-mt-sm row justify-around">
         <q-btn v-if="user" push color="positive" no-caps type="submit">
           Make Order
@@ -46,6 +54,7 @@ const checkoutForm = ref(null);
 const name = ref("");
 const mobile = ref("");
 const address = ref("");
+const note = ref("");
 const cartStore = useCartStore();
 const userStore = useUserStore();
 const router = useRouter();
@@ -57,6 +66,7 @@ const submit = () => {
     mobile: mobile.value,
     address: address.value,
     items: cartStore.getItems,
+    note: note.value,
   })
     .then((order) => {
       if (order) {

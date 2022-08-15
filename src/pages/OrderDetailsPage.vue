@@ -26,7 +26,7 @@
         />
       </span>
       <div class="text-overline">({{ parseDate(order.updated_at) }})</div>
-      <div class="row justify-around" v-if="order.status == 1">
+      <div class="row justify-evenly" v-if="order.status == 1">
         <q-btn
           label="Cancel Order"
           no-caps
@@ -46,7 +46,7 @@
           v-else
         />
       </div>
-      <div class="text-center q-mt-sm" v-if="isAdmin(userStore.getUser)">
+      <div class="q-mt-sm row justify-evenly" v-if="isAdmin(userStore.getUser)">
         <q-btn label="Update Order" no-caps @click="update" />
       </div>
       <q-expansion-item
@@ -55,10 +55,24 @@
         :expand-icon="fasChevronDown"
       >
         <q-card>
-          <q-card-section>
+          <q-card-section v-if="isAdmin(userStore.getUser)">
+            <q-input v-model="order.name" label="Name" />
+            <q-input v-model="order.mobile" label="Mobile" />
+            <q-input v-model="order.address" label="Address" type="textarea" />
+            <q-input v-model="order.note" label="Note" type="textarea" />
+            <div class="text-right q-mt-xs">
+              <q-btn
+                :icon="fasFloppyDisk"
+                color="primary"
+                @click="updateOrder"
+              />
+            </div>
+          </q-card-section>
+          <q-card-section v-else>
             <div>Name : {{ order.name }}</div>
             <div>Mobile : {{ order.mobile }}</div>
             <div>Address : {{ order.address }}</div>
+            <div>Note : {{ order.note }}</div>
           </q-card-section>
         </q-card>
       </q-expansion-item>
@@ -137,7 +151,7 @@ import useBackend from "src/composables/backend";
 import useUtility from "src/composables/utility";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
+import { fasChevronDown, fasFloppyDisk } from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
 import { useUserStore } from "src/stores/user";
@@ -149,10 +163,20 @@ const userStore = useUserStore();
 const { parseDate, formatCurrency, copyLinkToClipboard } = useUtility();
 const { isAdmin, getStatusIcon } = useApp();
 const order = ref(null);
-const { dialog } = useQuasar();
+const { dialog, loading } = useQuasar();
 const { infoNotify, parseOrderStatus } = useApp();
-const { updateOrder } = useBackend();
+const { updateOrderStatus, updateOrderInfo } = useBackend();
 
+const updateOrder = () => {
+  loading.show();
+  updateOrderInfo(order.value)
+    .then((_) => {
+      console.log(_);
+    })
+    .finally(() => {
+      loading.hide();
+    });
+};
 const showPaymentsDialog = () => {
   dialog({
     component: PaymentsDialog,
@@ -186,7 +210,7 @@ const cancel = () => {
       noCaps: true,
     },
   }).onOk(() => {
-    updateOrder(order.value, { status: 5 }).then((data) => {
+    updateOrderStatus(order.value, { status: 5 }).then((data) => {
       if (data) {
         order.value = data;
         infoNotify("Order has been canceled");
@@ -206,7 +230,7 @@ const update = () => {
     },
   }).onOk((status) => {
     if (order.value.status != status)
-      updateOrder(order.value, { status }).then((data) => {
+      updateOrderStatus(order.value, { status }).then((data) => {
         if (data) {
           order.value = data;
           infoNotify("Order has been updated to " + parseOrderStatus(status));
@@ -218,8 +242,9 @@ const { fetchAnOrder } = useBackend();
 const router = useRouter();
 onMounted(() => {
   fetchAnOrder(route.params.id).then((data) => {
-    if (data) order.value = data;
-    else router.replace({ name: "index" });
+    if (data) {
+      order.value = data;
+    } else router.replace({ name: "index" });
   });
 });
 </script>

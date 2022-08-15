@@ -3,14 +3,21 @@
     <q-card class="q-dialog-plugin">
       <q-card-section>
         <q-form @submit.prevent="submit">
-          <q-input :label="'Mobile'" v-model="mobile" required> </q-input>
+          <q-input
+            :label="'Mobile'"
+            v-model="mobile"
+            required
+            autocomplete="username"
+          />
+
           <q-input
             :label="'Password'"
             v-model="password"
             required
             type="password"
-          >
-          </q-input>
+            autocomplete="current-password"
+          />
+
           <div class="text-center q-mt-sm">
             <q-btn type="submit" :label="'Login'" color="primary" no-caps />
           </div>
