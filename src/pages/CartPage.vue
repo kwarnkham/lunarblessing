@@ -11,7 +11,7 @@
           <tr>
             <th class="text-left">#</th>
             <th class="text-left">Name</th>
-            <th class="text-right">Text</th>
+            <th class="text-right">Quote</th>
             <th class="text-right">Unit Price</th>
             <th class="text-right">Quantity</th>
             <th class="text-right">Amount (MMK)</th>

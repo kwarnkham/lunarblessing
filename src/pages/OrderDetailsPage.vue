@@ -89,8 +89,8 @@
             <th class="text-left">#</th>
             <th class="text-left">Name</th>
             <th class="text-left">Quote</th>
-            <th class="text-right">Quantity</th>
             <th class="text-right">Unit Price</th>
+            <th class="text-right">Quantity</th>
             <th class="text-right">Amount (MMK)</th>
           </tr>
         </thead>
@@ -99,31 +99,21 @@
             <td class="text-left">{{ i + 1 }}</td>
             <td class="text-left">{{ item.name }}</td>
             <td class="text-left">{{ item.pivot.text }}</td>
-            <td class="text-right">{{ item.pivot.quantity }}</td>
             <td class="text-right">
               {{ formatCurrency(item.pivot.sale_price) }}
             </td>
+            <td class="text-right">{{ item.pivot.quantity }}</td>
             <td class="text-right">
               {{ formatCurrency(item.pivot.sale_price * item.pivot.quantity) }}
             </td>
           </tr>
           <tr>
-            <td class="text-right" colspan="3">Total</td>
+            <td class="text-right" colspan="4">Total</td>
             <td class="text-right">
               {{
                 order.items.reduce(
                   (carry, value) => value.pivot.quantity + carry,
                   0
-                )
-              }}
-            </td>
-            <td class="text-right">
-              {{
-                formatCurrency(
-                  order.items.reduce(
-                    (carry, value) => value.pivot.sale_price + carry,
-                    0
-                  )
                 )
               }}
             </td>
