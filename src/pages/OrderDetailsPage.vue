@@ -88,6 +88,7 @@
           <tr>
             <th class="text-left">#</th>
             <th class="text-left">Name</th>
+            <th class="text-left">Quote</th>
             <th class="text-right">Quantity</th>
             <th class="text-right">Unit Price</th>
             <th class="text-right">Amount (MMK)</th>
@@ -97,6 +98,7 @@
           <tr v-for="(item, i) in order.items" :key="item.id">
             <td class="text-left">{{ i + 1 }}</td>
             <td class="text-left">{{ item.name }}</td>
+            <td class="text-left">{{ item.pivot.text }}</td>
             <td class="text-right">{{ item.pivot.quantity }}</td>
             <td class="text-right">
               {{ formatCurrency(item.pivot.sale_price) }}
@@ -106,7 +108,7 @@
             </td>
           </tr>
           <tr>
-            <td class="text-right" colspan="2">Total</td>
+            <td class="text-right" colspan="3">Total</td>
             <td class="text-right">
               {{
                 order.items.reduce(

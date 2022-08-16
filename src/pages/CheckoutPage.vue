@@ -65,7 +65,7 @@ const submit = () => {
     name: name.value,
     mobile: mobile.value,
     address: address.value,
-    items: cartStore.getItems,
+    items: groupItems(cartStore.getItems),
     note: note.value,
   })
     .then((order) => {
@@ -88,7 +88,7 @@ const submit = () => {
     });
 };
 
-const { showLoginDialog } = useApp();
+const { showLoginDialog, groupItems } = useApp();
 const { makeOrder } = useBackend();
 const user = computed(() => userStore.getUser);
 const fillForm = () => {
