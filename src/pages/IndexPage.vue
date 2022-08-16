@@ -1,18 +1,28 @@
 <template>
-  <q-page padding v-if="itemsStore.getItems.length">
+  <q-page
+    padding
+    v-if="itemsStore.getItems.length"
+    class="page text-grey-4"
+    :style="{
+      backgroundImage:
+        'url(' + getItemImage('/asset/home-bg.jpeg') + ') !important',
+    }"
+  >
     <div
-      class="text-subtitle2 text-center row justify-around h-30 overflow-hidden"
+      class="text-subtitle2 text-center row justify-around h-30 overflow-hidden top-marquee"
     >
       <div class="row fit no-wrap marquee">
-        <div v-for="image in images" :key="image.id" class="col-1">
+        <div v-for="image in signImages" :key="image.id" class="col-1">
           <q-icon :name="'img:' + getItemImage(image.url)" size="sm" />
         </div>
-        <div v-for="image in images" :key="image.name" class="col-1">
+        <div v-for="image in signImages" :key="image.name" class="col-1">
           <q-icon :name="'img:' + getItemImage(image.url)" size="sm" />
         </div>
       </div>
     </div>
-    <div class="text-center text-h5">Hope you love the product of nature</div>
+    <div class="text-center text-h5 text-weight-bolder">
+      Hope you love the product of nature
+    </div>
     <q-list>
       <q-item v-for="fact in facts" :key="fact.info">
         <q-item-section avatar>
@@ -61,6 +71,18 @@ const showImage = ref(true);
 const imageIndex = ref(0);
 const itemsStore = useItemsStore();
 const images = computed(() =>
+  [
+    { url: "/asset/home-image-1.jpeg" },
+    { url: "/asset/home-image-2.jpeg" },
+    { url: "/asset/home-image-3.jpeg" },
+    { url: "/asset/home-image-4.jpeg" },
+  ].concat(
+    itemsStore.getItems
+      .map((item) => item.pictures[0])
+      .filter((e) => e != undefined)
+  )
+);
+const signImages = computed(() =>
   itemsStore.getItems
     .map((item) => item.pictures[0])
     .filter((e) => e != undefined)
@@ -97,6 +119,11 @@ const facts = [
 </script>
 
 <style lang="scss" scoped>
+.page {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 .zoomIn,
 .zoomOut {
   --animate-duration: 1s;
@@ -110,5 +137,9 @@ const facts = [
 .images {
   width: 100%;
   height: 300px;
+}
+.top-marquee {
+  filter: invert(100%);
+  opacity: 0.5;
 }
 </style>

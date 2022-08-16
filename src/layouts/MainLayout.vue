@@ -96,7 +96,7 @@
       <router-view class="bg-grey-4" />
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-4 text-white">
+    <q-footer elevated class="bg-primary text-white">
       <q-toolbar class="row justify-around no-wrap">
         <q-btn
           :icon="fasPhone"
