@@ -129,6 +129,7 @@
         color="positive"
         class="fit"
         @click="addToCart"
+        :disabled="quote.length > 60"
       />
     </div>
   </q-page>
