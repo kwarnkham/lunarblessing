@@ -14,28 +14,41 @@ export const useCartStore = defineStore("cart", {
 
   actions: {
     addItem(item) {
+      item = JSON.parse(JSON.stringify(item));
       item.quantity = Number(item.quantity);
-      if (this.items.length == 0) this.items.push(item);
-      else {
-        const index = this.items.findIndex((val) => val.id == item.id);
+      if (this.items.length == 0) {
+        item.code = 1;
+        this.items.push(item);
+      } else {
+        const index = this.items.findIndex(
+          (val) => val.id == item.id && val.text == item.text
+        );
         if (index >= 0) {
           const cartItem = JSON.parse(JSON.stringify(this.items[index]));
           cartItem.quantity += item.quantity;
           this.items[index] = cartItem;
-        } else this.items.push(item);
+        } else {
+          item.code = this.items.length + 1;
+          this.items.push(item);
+        }
       }
       return this.items;
     },
 
     replaceItem(item) {
+      item = JSON.parse(JSON.stringify(item));
       item.quantity = Number(item.quantity);
-      const index = this.items.findIndex((val) => val.id == item.id);
-      if (index >= 0) this.items[index] = item;
+      const index = this.items.findIndex((val) => val.code == item.code);
+
+      if (index >= 0) {
+        this.items[index] = item;
+      }
+
       return this.items;
     },
 
     removeItem(item) {
-      const index = this.items.findIndex((val) => val.id == item.id);
+      const index = this.items.findIndex((val) => val.code == item.code);
       if (index >= 0) this.items.splice(index, 1);
       return this.items;
     },

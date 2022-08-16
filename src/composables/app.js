@@ -94,5 +94,16 @@ export default function useApp() {
           return fasCircleInfo;
       }
     },
+    groupItems: (items) => {
+      const group = {};
+      items.forEach((e) => {
+        const entry = (group[e.id + e.text] = group[e.id + e.text] || {
+          ...e,
+          quantity: 0,
+        });
+        entry.quantity += e.quantity;
+      });
+      return Object.values(group);
+    },
   };
 }
