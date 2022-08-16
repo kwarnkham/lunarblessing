@@ -63,9 +63,9 @@
           {{ quote }}
         </div>
         <div>
-          <span class="text-caption"
-            >The actual result may look a little different.</span
-          >
+          <span class="text-caption">
+            The actual result may look a little different.
+          </span>
           <q-btn
             label="See actual result."
             no-caps
@@ -105,7 +105,7 @@
       </q-input>
     </q-expansion-item>
 
-    <div class="q-mt-sm rounded-borders dim-bright-radio">
+    <!-- <div class="q-mt-sm rounded-borders dim-bright-radio">
       <div class="text-center">
         <q-btn
           :icon="fasInfo"
@@ -120,7 +120,8 @@
         <q-radio :label="'Bright Lid'" v-model="dimmedLid" :val="true" />
         <q-radio :label="'Dimmed Lid'" v-model="dimmedLid" :val="false" />
       </div>
-    </div>
+    </div> -->
+
     <div class="q-mt-sm">
       <q-btn
         :label="'Done!'"
@@ -157,7 +158,7 @@ import { useRouter } from "vue-router";
 const imgDiv = ref();
 const isBody = ref(true);
 const quote = ref("");
-const dimmedLid = ref(true);
+const dimmedLid = ref(false);
 const switchedOn = ref(true);
 const cartStore = useCartStore();
 const { dialog } = useQuasar();
@@ -196,15 +197,15 @@ const explainEngrave = () => {
     },
   });
 };
-const explainDimmedLid = () => {
-  dialog({
-    component: PictureDialog,
-    componentProps: {
-      src: "https://spaces.madewithheart.tech/lunarblessing/asset/aries.png",
-      text: "You might want to choose dimmed lid if you don't want bright light from the top(lid)",
-    },
-  });
-};
+// const explainDimmedLid = () => {
+//   dialog({
+//     component: PictureDialog,
+//     componentProps: {
+//       src: "https://spaces.madewithheart.tech/lunarblessing/asset/aries.png",
+//       text: "You might want to choose dimmed lid if you don't want bright light from the top(lid)",
+//     },
+//   });
+// };
 
 const addToCart = () => {
   dialog({
