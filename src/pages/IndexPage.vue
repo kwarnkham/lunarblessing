@@ -5,7 +5,7 @@
     class="page text-grey-4"
     :style="{
       backgroundImage:
-        'url(' + getItemImage('/asset/home-bg.jpeg') + ') !important',
+        'url(' + getImage('/asset/home-bg.jpeg') + ') !important',
     }"
   >
     <div
@@ -13,10 +13,10 @@
     >
       <div class="row fit no-wrap marquee">
         <div v-for="image in signImages" :key="image.id" class="col-1">
-          <q-icon :name="'img:' + getItemImage(image.url)" size="sm" />
+          <q-icon :name="'img:' + getImage(image.url)" size="sm" />
         </div>
         <div v-for="image in signImages" :key="image.name" class="col-1">
-          <q-icon :name="'img:' + getItemImage(image.url)" size="sm" />
+          <q-icon :name="'img:' + getImage(image.url)" size="sm" />
         </div>
       </div>
     </div>
@@ -88,14 +88,14 @@ const signImages = computed(() =>
     .filter((e) => e != undefined)
 );
 const currentImage = computed(() =>
-  getItemImage(images.value[imageIndex.value].url)
+  getImage(images.value[imageIndex.value].url)
 );
 const hideImage = () => {
   setTimeout(() => {
     showImage.value = false;
   }, 2000);
 };
-const { getItemImage } = useApp();
+const { getImage } = useApp();
 const showNextImage = () => {
   if (imageIndex.value + 1 < images.value.length) imageIndex.value++;
   else imageIndex.value = 0;

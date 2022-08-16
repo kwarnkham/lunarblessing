@@ -45,31 +45,66 @@
         <q-btn :icon="fasImage" color="info" flat @click="showAllPictures" />
       </div>
     </div>
-    <q-input
-      :label="'Custom quote (Optional)'"
-      outlined
-      :placeholder="'Growing strong'"
-      color="secondary"
-      v-model="quote"
-      no-error-icon
-      counter
-      type="textarea"
-      :rules="[
-        (val) =>
-          val == '' ? true : val.length <= 60 || 'Keep it a bit shorter please',
-      ]"
+    <q-expansion-item
+      expand-separator
+      :icon="fasPenNib"
+      :expand-icon="fasChevronDown"
+      popup
+      label="Engrave"
+      caption="You may engrave custom text to the product"
     >
-      <template v-slot:append>
-        <q-btn
-          :icon="fasInfo"
-          glossy
-          size="xs"
-          round
-          color="info"
-          @click="explainEngrave"
+      <div class="text-center relative-position">
+        <img
+          :src="getImage('/asset/engrave-bg.jpeg')"
+          alt="engrave-preview"
+          style="height: 300px"
         />
-      </template>
-    </q-input>
+        <div class="engrave-text text-weight-bold" style="width: 100px">
+          {{ quote }}
+        </div>
+        <div>
+          <span class="text-caption"
+            >The actual result may look a little different.</span
+          >
+          <q-btn
+            label="See actual result."
+            no-caps
+            flat
+            color="info"
+            @click="explainEngrave"
+          />
+        </div>
+      </div>
+
+      <q-input
+        :label="'Custom quote (Optional)'"
+        outlined
+        :placeholder="'Growing strong'"
+        color="secondary"
+        v-model="quote"
+        no-error-icon
+        counter
+        type="textarea"
+        :rules="[
+          (val) =>
+            val == ''
+              ? true
+              : val.length <= 60 || 'Keep it a bit shorter please',
+        ]"
+      >
+        <template v-slot:append>
+          <q-btn
+            :icon="fasInfo"
+            glossy
+            size="xs"
+            round
+            color="info"
+            @click="explainEngrave"
+          />
+        </template>
+      </q-input>
+    </q-expansion-item>
+
     <div class="q-mt-sm rounded-borders dim-bright-radio">
       <div class="text-center">
         <q-btn
@@ -106,6 +141,8 @@ import {
   fasInfo,
   fasToggleOff,
   fasToggleOn,
+  fasChevronDown,
+  fasPenNib,
 } from "@quasar/extras/fontawesome-v6";
 import { useCssVar } from "@vueuse/core";
 import { useQuasar } from "quasar";
@@ -125,7 +162,7 @@ const switchedOn = ref(true);
 const cartStore = useCartStore();
 const { dialog } = useQuasar();
 const router = useRouter();
-const { getItemImage } = useApp();
+const { getImage } = useApp();
 
 const itemStore = useItemsStore();
 const selectedItem = ref(itemStore.getItems[0]);
@@ -154,7 +191,7 @@ const explainEngrave = () => {
   dialog({
     component: PictureDialog,
     componentProps: {
-      src: "https://spaces.madewithheart.tech/lunarblessing/asset/aries.png",
+      src: getImage("/asset/engrave-example.jpeg"),
       text: "We engrave the text you provided to the lamp. It's optional.",
     },
   });
@@ -211,7 +248,7 @@ const showAllPictures = () => {
 };
 
 const onImage = useCssVar("--onimage", imgDiv, {
-  initialValue: `url(${getItemImage(
+  initialValue: `url(${getImage(
     selectedItem.value.pictures.find(
       (picture) => picture.type == (isBody.value ? 3 : 5)
     ).url
@@ -219,20 +256,20 @@ const onImage = useCssVar("--onimage", imgDiv, {
 });
 
 const offImage = useCssVar("--offimage", imgDiv, {
-  initialValue: `url(${getItemImage(
+  initialValue: `url(${getImage(
     selectedItem.value.pictures.find(
       (picture) => picture.type == (isBody.value ? 2 : 4)
     ).url
   )})`,
 });
 const setImageUrl = () => {
-  onImage.value = `url(${getItemImage(
+  onImage.value = `url(${getImage(
     selectedItem.value.pictures.find(
       (picture) => picture.type == (isBody.value ? 3 : 5)
     ).url
   )})`;
 
-  offImage.value = `url(${getItemImage(
+  offImage.value = `url(${getImage(
     selectedItem.value.pictures.find(
       (picture) => picture.type == (isBody.value ? 2 : 4)
     ).url
@@ -244,6 +281,12 @@ watch(isBody, setImageUrl);
 </script>
 
 <style scoped lang="scss">
+.engrave-text {
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  transform: translate(-50%, 0);
+}
 .dim-bright-radio {
   border: solid $info 1px;
   padding-top: 6px;

@@ -25,7 +25,7 @@
             v-for="picture in pictures"
             :key="picture.id"
             :name="picture.id"
-            :img-src="getItemImage(picture.url)"
+            :img-src="getImage(picture.url)"
             class="slide"
           />
           <template v-slot:control>
@@ -101,7 +101,7 @@ const props = defineProps({
 
 const autoPlay = ref(false);
 
-const { getItemImage } = useApp();
+const { getImage } = useApp();
 const slide = ref(props.pictures[0].id);
 const fullscreen = ref(false);
 defineEmits([
