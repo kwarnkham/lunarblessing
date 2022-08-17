@@ -9,6 +9,7 @@
             required
             autocomplete="username"
             prefix="09-"
+            type="tel"
           />
 
           <q-input
