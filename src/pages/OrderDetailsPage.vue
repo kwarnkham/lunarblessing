@@ -48,6 +48,12 @@
       </div>
       <div class="q-my-sm row justify-evenly" v-if="isAdmin(userStore.getUser)">
         <q-btn label="Update Order" no-caps @click="update" />
+        <q-btn
+          :icon="fasBell"
+          flat
+          :color="silent ? 'grey' : 'primary'"
+          @click="silent = !silent"
+        />
       </div>
       <q-expansion-item
         expand-separator
@@ -143,7 +149,11 @@ import useBackend from "src/composables/backend";
 import useUtility from "src/composables/utility";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { fasChevronDown, fasFloppyDisk } from "@quasar/extras/fontawesome-v6";
+import {
+  fasChevronDown,
+  fasFloppyDisk,
+  fasBell,
+} from "@quasar/extras/fontawesome-v6";
 import { useQuasar } from "quasar";
 import useApp from "src/composables/app";
 import { useUserStore } from "src/stores/user";
@@ -155,6 +165,7 @@ const userStore = useUserStore();
 const { parseDate, formatCurrency, copyLinkToClipboard } = useUtility();
 const { isAdmin, getStatusIcon } = useApp();
 const order = ref(null);
+const silent = ref(false);
 const { dialog, loading } = useQuasar();
 const { infoNotify, parseOrderStatus } = useApp();
 const { updateOrderStatus, updateOrderInfo } = useBackend();
@@ -227,7 +238,7 @@ const update = () => {
   }).onOk((status) => {
     if (order.value.status != status) {
       loading.show();
-      updateOrderStatus(order.value, { status })
+      updateOrderStatus(order.value, { status, silent: silent.value })
         .then((data) => {
           if (data) {
             order.value = data;
