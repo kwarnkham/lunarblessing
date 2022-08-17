@@ -51,10 +51,7 @@ const password = ref("");
 const passwordAgain = ref("");
 const { changePassword } = useBackend();
 const { successNotify } = useApp();
-const canChangePassword =
-  !userStore.getUser.fb_login_id &&
-  !userStore.getUser.email &&
-  !userStore.getUser.telegram_id;
+const canChangePassword = userStore.getUser.has_password;
 const submit = () => {
   loading.show();
   changePassword({
