@@ -20,5 +20,9 @@ const settings = [
     label: "Change Password",
     routeName: "changePassword",
   },
+  {
+    label: "Notification",
+    routeName: "notification",
+  },
 ];
 </script>

@@ -49,6 +49,11 @@ const routes = [
         name: "changePassword",
       },
       {
+        path: "notification",
+        component: () => import("pages/NotificationSetting.vue"),
+        name: "notification",
+      },
+      {
         path: "privacy-policy",
         component: () => import("pages/PrivacyPolicyPage.vue"),
         name: "pirvacyPolicy",

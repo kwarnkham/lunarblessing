@@ -42,8 +42,19 @@ export default function useBackend() {
     checkToken: async () => {
       try {
         return await api({
-          method: "POST",
+          method: "GET",
           url: "/check-token",
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
+    changeSetting: async (data) => {
+      try {
+        return await api({
+          method: "POST",
+          url: "/user/setting/" + data.user_id,
+          data,
         }).then(({ data }) => data);
       } catch (error) {
         handleResponse(error);
