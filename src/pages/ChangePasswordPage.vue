@@ -11,6 +11,7 @@
         v-model="current"
         required
         type="password"
+        autocomplete="password"
       >
       </q-input>
       <q-input
@@ -18,6 +19,7 @@
         v-model="password"
         required
         type="password"
+        autocomplete="new-password"
       >
       </q-input>
       <q-input
@@ -25,6 +27,7 @@
         v-model="passwordAgain"
         required
         type="password"
+        autocomplete="new-password"
       >
       </q-input>
       <div class="text-center q-mt-sm">
@@ -32,7 +35,8 @@
       </div>
     </q-form>
     <div v-else class="text-center text-subtitle1">
-      You don't have or need a password to login. You can login via Facebook.
+      You don't have or need a password to login. You can login via other
+      platform.
     </div>
   </q-page>
 </template>

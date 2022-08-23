@@ -1,7 +1,7 @@
 <template>
   <q-page padding class="flex flex-center">
     <div>
-      <q-btn-group v-if="userStore.getUser.telegram_id">
+      <q-btn-group v-if="userStore.getUser?.telegram_id">
         <q-btn
           :color="notify ? 'primary' : 'grey'"
           label="Notify me via telegram"
@@ -47,11 +47,12 @@ const subscribeTelegramBot = () => {
           const token = localStorage.getItem("token");
           if (token.includes("|") === false) return;
           const payload = token.split("|", 2)[0] + "-" + userStore.getUser.id;
-          window.open("https://t.me/lunarblessing_bot?start=" + payload);
-          setTimeout(() => {
-            console.log("hi");
-          }, 2000);
+          const url = process.env.DEV
+            ? "https://t.me/lunarblessing_dev_bot?start=" + payload
+            : "https://t.me/lunarblessing_bot?start=" + payload;
+          window.open(url);
         });
+      else notify.value = data.telegram_notify;
     })
     .finally(() => {
       loading.hide();

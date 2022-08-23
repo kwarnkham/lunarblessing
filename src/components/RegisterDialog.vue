@@ -10,6 +10,7 @@
             required
             type="tel"
             prefix="09-"
+            autocomplete="username"
           >
           </q-input>
           <q-input
@@ -17,6 +18,7 @@
             v-model="password"
             required
             type="password"
+            autocomplete="new-password"
           >
           </q-input>
           <q-input
@@ -24,6 +26,7 @@
             v-model="passwordConfirm"
             required
             type="password"
+            autocomplete="new-password"
           >
           </q-input>
           <div class="text-center q-mt-sm">

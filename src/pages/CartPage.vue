@@ -23,14 +23,8 @@
               {{ i + 1 }}
             </td>
             <td class="text-left">{{ item.name }}</td>
-            <td class="text-right">
-              <q-btn
-                :label="item.text"
-                dense
-                flat
-                @click="editText(item)"
-                no-caps
-              />
+            <td class="text-right" @click="editText(item)">
+              {{ item.text }}
             </td>
             <td class="text-right">{{ item.price }}</td>
             <td class="text-right">
