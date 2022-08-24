@@ -190,6 +190,21 @@ export default function useBackend() {
       }
     },
 
+    checkPaid: async (order, data) => {
+      try {
+        return await api({
+          method: "POST",
+          url: "/order/check-paid/" + order.id,
+          data: buildForm(data),
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
+
     updateOrderInfo: async (order) => {
       try {
         return await api({

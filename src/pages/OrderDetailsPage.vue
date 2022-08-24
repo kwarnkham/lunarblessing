@@ -26,12 +26,12 @@
         />
       </span>
       <div class="text-overline">({{ parseDate(order.updated_at) }})</div>
-      <div class="row justify-evenly" v-if="order.status == 1">
+      <div class="row justify-evenly">
         <q-btn
           label="Cancel Order"
           no-caps
           @click="cancel"
-          v-if="!order.screenshot"
+          v-if="!order.screenshot && order.status == 1"
         />
         <q-btn
           label="Pay order"
@@ -45,6 +45,49 @@
           @click="showPaidScreenshot"
           v-else
         />
+
+        <PicturesSelector
+          v-model="selectedPictures"
+          v-if="isAdmin(userStore.getUser) && !order.checked_screenshot"
+        >
+          <template #showSelectedPictures="{ showPicturesToUpload }">
+            <q-btn
+              no-caps
+              outline
+              color="accent"
+              :icon="fasEye"
+              @click="showPicturesToUpload"
+            />
+          </template>
+          <template #deleteSelectedPictures="{ clearChosenImages }">
+            <q-btn
+              no-caps
+              outline
+              color="negative"
+              :icon="fasTrash"
+              @click="clearChosenImages"
+            />
+          </template>
+          <template #imagePicker="{ chooseImages }">
+            <q-btn
+              color="indigo"
+              @click="chooseImages"
+              no-caps
+              :label="'Upload Checked Screenshot'"
+            />
+          </template>
+          <template #upload>
+            <q-btn color="indigo" :label="'Save'" @click="uploadCheckPaid" />
+          </template>
+        </PicturesSelector>
+
+        <div v-if="isAdmin(userStore.getUser) && order.checked_screenshot">
+          <q-btn
+            label="Show checked screenshot"
+            no-caps
+            @click="showCheckedScreenshot"
+          />
+        </div>
       </div>
       <div class="q-my-sm row justify-evenly" v-if="isAdmin(userStore.getUser)">
         <q-btn label="Update Order" no-caps @click="update" />
@@ -153,6 +196,7 @@ import useBackend from "src/composables/backend";
 import useUtility from "src/composables/utility";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import PicturesSelector from "src/components/PicturesSelector";
 import {
   fasChevronDown,
   fasFloppyDisk,
@@ -163,6 +207,7 @@ import useApp from "src/composables/app";
 import { useUserStore } from "src/stores/user";
 import PaymentsDialog from "src/components/PaymentsDialog";
 import PictureDialog from "src/components/PictureDialog";
+import { fasEye, fasTrash } from "@quasar/extras/fontawesome-v6";
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -171,8 +216,10 @@ const { isAdmin, getStatusIcon } = useApp();
 const order = ref(null);
 const silent = ref(false);
 const { dialog, loading } = useQuasar();
+const selectedPictures = ref([]);
 const { infoNotify, parseOrderStatus } = useApp();
-const { updateOrderStatus, updateOrderInfo, updateOrderProduct } = useBackend();
+const { updateOrderStatus, updateOrderInfo, updateOrderProduct, checkPaid } =
+  useBackend();
 const editProduct = (item, field) => {
   dialog({
     title: `Edit ${field} of ${item.name}`,
@@ -203,6 +250,18 @@ const editProduct = (item, field) => {
     }
   });
 };
+
+const uploadCheckPaid = () => {
+  loading.show();
+  checkPaid(order.value, { screenshot: selectedPictures.value[0] })
+    .then((data) => {
+      order.value = data;
+      selectedPictures.value = [];
+    })
+    .finally(() => {
+      loading.hide();
+    });
+};
 const updateOrder = () => {
   loading.show();
   updateOrderInfo(order.value)
@@ -230,6 +289,17 @@ const showPaidScreenshot = () => {
       component: PictureDialog,
       componentProps: {
         src: `${process.env.ASSET_URL}/order_paid/${order.value.screenshot}`,
+      },
+    });
+};
+
+const showCheckedScreenshot = () => {
+  if (order.value.checked_screenshot)
+    dialog({
+      title: "Checked screenshot",
+      component: PictureDialog,
+      componentProps: {
+        src: `${process.env.ASSET_URL}/order_paid_checked/${order.value.checked_screenshot}`,
       },
     });
 };
