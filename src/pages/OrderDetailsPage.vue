@@ -104,11 +104,15 @@
           <tr v-for="(item, i) in order.items" :key="item.id">
             <td class="text-left">{{ i + 1 }}</td>
             <td class="text-left">{{ item.name }}</td>
-            <td class="text-left">{{ item.pivot.text }}</td>
-            <td class="text-right">
+            <td class="text-left" @click="editProduct(item, 'text')">
+              {{ item.pivot.text }}
+            </td>
+            <td class="text-right" @click="editProduct(item, 'sale_price')">
               {{ formatCurrency(item.pivot.sale_price) }}
             </td>
-            <td class="text-right">{{ item.pivot.quantity }}</td>
+            <td class="text-right" @click="editProduct(item, 'quantity')">
+              {{ item.pivot.quantity }}
+            </td>
             <td class="text-right">
               {{ formatCurrency(item.pivot.sale_price * item.pivot.quantity) }}
             </td>
@@ -168,8 +172,37 @@ const order = ref(null);
 const silent = ref(false);
 const { dialog, loading } = useQuasar();
 const { infoNotify, parseOrderStatus } = useApp();
-const { updateOrderStatus, updateOrderInfo } = useBackend();
-
+const { updateOrderStatus, updateOrderInfo, updateOrderProduct } = useBackend();
+const editProduct = (item, field) => {
+  dialog({
+    title: `Edit ${field} of ${item.name}`,
+    persistent: true,
+    prompt: {
+      model: item.pivot[field],
+      type: "text",
+      label: field,
+    },
+  }).onOk((value) => {
+    if (value != item[field]) {
+      loading.show();
+      const data = {
+        order_id: order.value.id,
+        item_id: item.id,
+        quantity: item.pivot.quantity,
+        sale_price: item.pivot.sale_price,
+        text: item.pivot.text,
+      };
+      data[field] = value;
+      updateOrderProduct(data)
+        .then((data) => {
+          order.value = data;
+        })
+        .finally(() => {
+          loading.hide();
+        });
+    }
+  });
+};
 const updateOrder = () => {
   loading.show();
   updateOrderInfo(order.value)

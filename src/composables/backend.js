@@ -201,5 +201,17 @@ export default function useBackend() {
         handleResponse(error);
       }
     },
+
+    updateOrderProduct: async (data) => {
+      try {
+        return await api({
+          method: "PUT",
+          url: "/order/" + data.order_id + "/product",
+          data,
+        }).then(({ data }) => data);
+      } catch (error) {
+        handleResponse(error);
+      }
+    },
   };
 }
