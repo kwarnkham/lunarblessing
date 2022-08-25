@@ -47,3 +47,16 @@ const images = computed(() =>
   )
 );
 </script>
+
+<style scoped lang="scss">
+.rotateInDownLeft {
+  --animate-duration: 1s;
+}
+.backOutDown {
+  --animate-duration: 1s;
+}
+.images {
+  width: 100%;
+  height: 300px;
+}
+</style>

@@ -27,4 +27,9 @@ const signImages = computed(() =>
 );
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.top-marquee {
+  filter: invert(100%);
+  opacity: 0.5;
+}
+</style>

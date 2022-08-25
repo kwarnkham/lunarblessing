@@ -28,6 +28,7 @@ import useApp from "src/composables/app";
 import RunningZodiacSigns from "src/components/RunningZodiacSigns";
 import { useItemsStore } from "src/stores/items";
 import HomeImages from "src/components/HomeImages.vue";
+import HomeContent from "src/components/HomeContent.vue";
 
 const itemsStore = useItemsStore();
 
@@ -39,23 +40,5 @@ const { getImage } = useApp();
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-}
-.zoomIn,
-.zoomOut {
-  --animate-duration: 1s;
-}
-.rotateInDownLeft {
-  --animate-duration: 1s;
-}
-.backOutDown {
-  --animate-duration: 1s;
-}
-.images {
-  width: 100%;
-  height: 300px;
-}
-.top-marquee {
-  filter: invert(100%);
-  opacity: 0.5;
 }
 </style>
