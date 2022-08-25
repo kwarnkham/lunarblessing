@@ -93,7 +93,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view class="bg-grey-4" />
+      <router-view class="bg-grey-9" />
     </q-page-container>
 
     <q-footer elevated class="bg-primary text-white">
