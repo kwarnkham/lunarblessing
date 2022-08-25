@@ -1,5 +1,5 @@
 <template>
-  <q-page padding v-if="itemStore.getItems.length" class="page">
+  <q-page padding v-if="itemStore.getItems.length" class="page bg-grey-4">
     <div class="full-width text-center">
       <q-btn label="What's my zodiac sign?" no-caps flat @click="showSigns" />
     </div>

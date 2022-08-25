@@ -1,8 +1,15 @@
 <template>
-  <q-page padding class="column" :style-fn="pageOptions">
+  <q-page padding class="column bg-grey-4" :style-fn="pageOptions">
     <div class="col scroll q-mb-sm" v-if="cartStore.getItems.length">
-      <div>Tap on <strong>Text</strong> to edit Text</div>
-      <div>Tap on <strong>Quantity</strong> to edit Quantity</div>
+      <ul>
+        <li>Tap on <strong>Text</strong> to edit Text</li>
+        <li>Tap on <strong>Quantity</strong> to edit Quantity</li>
+        <li>
+          Change <strong>Quantity</strong> to zero to remove the product from
+          the cart
+        </li>
+      </ul>
+
       <div class="text-right">
         <q-btn label="Clear" no-caps flat @click="clearCart" />
       </div>
@@ -172,3 +179,9 @@ onMounted(() => {
     });
 });
 </script>
+
+<style scoped lang="scss">
+li {
+  list-style: none;
+}
+</style>

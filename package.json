@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Handcraft products",
   "productName": "Lunar Blessing",
+  "productDescription": "Lunar Blessing",
   "author": "Moon <kwarnkham.moon@gmail.com>",
   "private": true,
   "scripts": {

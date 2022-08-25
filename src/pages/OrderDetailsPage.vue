@@ -37,7 +37,7 @@
           label="Pay order"
           no-caps
           @click="showPaymentsDialog"
-          v-if="!order.screenshot"
+          v-if="!order.screenshot && order.status == 1"
         />
         <q-btn
           label="Show paid screenshot"

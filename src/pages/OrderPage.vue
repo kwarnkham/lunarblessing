@@ -1,5 +1,5 @@
 <template>
-  <q-page padding :style-fn="pageOptions" class="column">
+  <q-page padding :style-fn="pageOptions" class="column bg-grey-4">
     <q-form
       @submit.prevent="filter"
       ref="orderFilterForm"

@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="q-gutter-y-xs">
+  <q-page padding class="q-gutter-y-xs bg-grey-4">
     <q-card
       v-for="setting in settings"
       :key="setting.label"

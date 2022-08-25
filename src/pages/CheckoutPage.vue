@@ -1,5 +1,5 @@
 <template>
-  <q-page padding class="flex flex-center">
+  <q-page padding class="flex flex-center bg-grey-4">
     <q-form @submit.prevent="submit" ref="checkoutForm" class="full-width">
       <q-input :label="'Name'" outline dense v-model="name" required> </q-input>
       <q-input outline dense v-model="mobile" required type="tel">
