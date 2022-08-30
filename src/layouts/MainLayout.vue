@@ -172,13 +172,13 @@ const contact = (name) => {
   switch (name) {
     case "facebook":
       if (platform.is.ios) window.open("fb://profile/108651881914551");
-      else window.open("fb://page/108651881914551");
+      else window.open("fb://page/108651881914551", "_self");
       break;
     case "messenger":
-      window.open("https://m.me/lunarblessingsmm");
+      window.open("https://m.me/lunarblessingsmm", "_self");
       break;
     case "phone":
-      window.open("tel:+959452538242");
+      window.open("tel:+959452538242", "_self");
       break;
     default:
       break;

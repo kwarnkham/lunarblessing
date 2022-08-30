@@ -59,7 +59,10 @@
           alt="engrave-preview"
           style="height: 300px"
         />
-        <div class="engrave-text text-weight-bold" style="width: 100px">
+        <div
+          class="engrave-text text-weight-bold edu-font"
+          style="width: 100px"
+        >
           {{ quote }}
         </div>
         <div>
@@ -77,6 +80,7 @@
       </div>
 
       <q-input
+        class="edu-font"
         :label="'Custom quote (Optional)'"
         outlined
         :placeholder="'Growing strong'"
