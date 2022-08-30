@@ -158,7 +158,7 @@ import useApp from "src/composables/app";
 import { useCartStore } from "src/stores/cart";
 import { useItemsStore } from "src/stores/items";
 import { ref, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const imgDiv = ref();
 const isBody = ref(true);
@@ -168,10 +168,15 @@ const switchedOn = ref(true);
 const cartStore = useCartStore();
 const { dialog } = useQuasar();
 const router = useRouter();
+const route = useRoute();
 const { getImage } = useApp();
 
 const itemStore = useItemsStore();
-const selectedItem = ref(itemStore.getItems[0]);
+
+const selectedItem = ref(
+  itemStore.getItems.find((e) => e.name.toLowerCase() == route.query.sign) ??
+    itemStore.getItems[0]
+);
 const showSigns = () => {
   dialog({
     title: "Zodiac Signs Dates",
@@ -282,6 +287,14 @@ const setImageUrl = () => {
   )})`;
 };
 
+watch(selectedItem, () => {
+  router.replace({
+    name: "lamp",
+    query: {
+      sign: selectedItem.value.name.toLowerCase(),
+    },
+  });
+});
 watch(selectedItem, setImageUrl);
 watch(isBody, setImageUrl);
 </script>
